@@ -36,7 +36,7 @@ const InterviewPractice = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/interview/${id}`,{
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/interview/${id}`,{
             withCredentials: true
         });
         setProfile(response.data);

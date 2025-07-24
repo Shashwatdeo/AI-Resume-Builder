@@ -40,7 +40,7 @@ export function DSARound({ profileData }) {
         const generateQuestions = async () => {
             try {
                 const difficulty = profileData.difficulty;
-                const response = await axios.post('http://localhost:8000/api/resume/generate-dsa-questions', { difficulty });
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/resume/generate-dsa-questions`, { difficulty });
                 const data = response.data;
                 setQuestions(data.questions);
                 setCurrentQuestionIndex(0);
@@ -82,7 +82,7 @@ export function DSARound({ profileData }) {
     const handleSubmit = async () => {
         setIsRunning(false);
         try {
-            const response = await axios.post('http://localhost:8000/api/resume/evaluate-dsa', {
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/resume/evaluate-dsa`, {
                 question: questions[currentQuestionIndex],
                 code,
                 language,

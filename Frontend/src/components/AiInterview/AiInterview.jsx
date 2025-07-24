@@ -13,7 +13,7 @@ export default function Dashboard() {
     useEffect(() => {
         const fetchProfiles = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/interview/', {
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/interview/`, {
         withCredentials: true, 
         });
         console.log('Fetched profiles:', response.data);

@@ -17,7 +17,7 @@ export function ProjectRound({ profileData }) {
         const generateQuestions = async () => {
             const questionsForAllProjects = [];
             for (const project of projects) {
-                const response = await axios.post('http://localhost:8000/api/resume/generate-project-questions', { project });
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/resume/generate-project-questions`, { project });
                 questionsForAllProjects.push({
                     project: project.name,
                     questions: response.data.questions

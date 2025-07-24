@@ -24,7 +24,7 @@ export default function ProfileView() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/interview/${id}`,{
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/interview/${id}`,{
             withCredentials: true
         });
         setProfile(response.data);
@@ -112,85 +112,4 @@ export default function ProfileView() {
                     profile.difficulty === 'Beginner' ? 'bg-green-100 text-green-800' :
                     profile.difficulty === 'Intermediate' ? 'bg-blue-100 text-blue-800' :
                     'bg-purple-100 text-purple-800'
-                  }`}>
-                    {profile.difficulty}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Skills */}
-            <div>
-              <h2 className="text-lg font-medium text-gray-900 flex items-center mb-2">
-                <Code className="h-5 w-5 text-indigo-500 mr-2" />
-                Skills
-              </h2>
-              <div className="flex flex-wrap gap-2">
-                {profile.skills.map((skill, index) => (
-                  <span 
-                    key={index}
-                    className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Projects */}
-            {profile.projects?.length > 0 && (
-              <div>
-                <h2 className="text-lg font-medium text-gray-900 flex items-center mb-2">
-                  <BookOpen className="h-5 w-5 text-indigo-500 mr-2" />
-                  Projects
-                </h2>
-                <div className="space-y-4">
-                  {profile.projects.map((project, index) => (
-                    <div key={index} className="border-l-4 border-indigo-200 pl-4 py-2">
-                      <h3 className="font-medium text-gray-800">{project.name}</h3>
-                      {project.description && (
-                        <p className="text-gray-600 mt-1">{project.description}</p>
-                      )}
-                      {project.technologies?.length > 0 && (
-                        <div className="mt-2 flex flex-wrap gap-1">
-                          {project.technologies.map((tech, i) => (
-                            <span 
-                              key={i}
-                              className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            
-            {/* Created At */}
-            <div className="text-sm text-gray-500 flex items-center">
-              <Calendar className="h-4 w-4 mr-1" />
-              Created: {new Date(profile.createdAt).toLocaleDateString()}
-            </div>
-          </div>
-
-          {/* Footer with Start Button */}
-          <div className="px-6 py-4 flex justify-end">
-            <Button
-              onClick={() => {
-                navigate(`/interview-practice/${profile._id}`);
-                console.log('Starting interview for profile:', profile._id);
-              }}
-              className="bg-indigo-600 hover:bg-indigo-700"
-            >
-              Start Interview Practice
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+                  }`

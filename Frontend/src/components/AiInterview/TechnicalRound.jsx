@@ -23,7 +23,7 @@ export const TechnicalRound = ({ skills, difficulty, onComplete, onBack }) => {
     const fetchQuestions = async () => {
       try {
         setLoading(true);
-        const response = await axios.post('http://localhost:8000/api/interview/generate-technical-questions', {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/interview/generate-technical-questions`, {
           skills,
           difficulty
         });
@@ -41,7 +41,7 @@ export const TechnicalRound = ({ skills, difficulty, onComplete, onBack }) => {
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      const response = await axios.post('http://localhost:8000/api/interview/evaluate-technical-answer', {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/interview/evaluate-technical-answer`, {
         question: questions[currentQuestionIndex],
         answer
       });
