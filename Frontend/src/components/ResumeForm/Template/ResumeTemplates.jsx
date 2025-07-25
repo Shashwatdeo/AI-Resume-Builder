@@ -56,9 +56,14 @@ function ResumeTemplates() {
     }
 
     try {
+      // Map display name to valid template name
+      let templateName = 'GeneralPreview';
+      if (selectedTemplate.name === 'Specialized Resume') {
+        templateName = 'SpecializedPreview';
+      }
       const response = await resumeService.createResume(
         resumeName,
-        selectedTemplate.previewComponent.name // Using the component name as template identifier
+        templateName // Always use a valid template name
       );
       navigate(`/resume/${response._id}`);
     } catch (error) {
