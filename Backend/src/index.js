@@ -16,7 +16,7 @@ const app = express();
 app.use(cors({
     origin: [
       "http://localhost:5173", // for local dev
-      "https://ai-resume-builder-lbyx.vercel.app/" // for production, replace with your actual Vercel URL
+      "https://ai-resume-builder-lyart-three.vercel.app" // for production, replace with your actual Vercel URL
     ],
     credentials: true,
   }));
