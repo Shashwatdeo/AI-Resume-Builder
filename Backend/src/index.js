@@ -15,7 +15,7 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://ai-resume-builder-lyart-three.vercel.app"
+  "https://ai-resumex-builder.vercel.app"
 ];
 
 app.use(cors({
