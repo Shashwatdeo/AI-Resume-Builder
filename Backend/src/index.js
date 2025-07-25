@@ -13,13 +13,15 @@ import path from 'path';
 
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://ai-resume-builder-lyart-three.vercel.app"
+];
+
 app.use(cors({
-    origin: [
-      "http://localhost:5173", // for local dev
-      "https://ai-resume-builder-lyart-three.vercel.app" // for production, replace with your actual Vercel URL
-    ],
-    credentials: true,
-  }));
+  origin: allowedOrigins,
+  credentials: true,
+}));
 
 app.use(express.json({ limit: '5mb' })); // or even higher if needed
 app.use(express.urlencoded({ extended: true, limit: '5mb' }));
