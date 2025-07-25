@@ -23,20 +23,21 @@ function ResumeTemplates() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const backendUrl = import.meta.env.VITE_API_URL;
   const templates = [
     {
       name: 'General Resume',
       description: 'Professional format suitable for most industries',
-      thumbnail: 'src/assets/general-template.jpg',
+      thumbnail: `${backendUrl}/uploads/general-template.jpg`,
       previewComponent: GeneralPreview,
-      previewImage: 'src/assets/general-template.jpg'
+      previewImage: `${backendUrl}/uploads/general-template.jpg`
     },
     {
       name: 'Specialized Resume',
       description: 'Tailored for specific roles with a modern design',
-      thumbnail: 'src/assets/specialized-template.jpg',
+      thumbnail: `${backendUrl}/uploads/specialized-template.jpg`,
       previewComponent: SpecializedPreview,
-      previewImage: 'src/assets/specialized-template.jpg'
+      previewImage: `${backendUrl}/uploads/specialized-template.jpg`
     }
   ];
 
