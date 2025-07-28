@@ -19,9 +19,10 @@ function Resume() {
   const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [resumeData, setResumeData] = useState(null);
   const [error, setError] = useState(null);
-
+  const [loadingMessage, setLoadingMessage] = useState('Loading resume...');
 
   const emptyResume = {
     name: '',
@@ -56,14 +57,27 @@ function Resume() {
     const fetchResume = async () => {
       try {
         setIsLoading(true);
+        setLoadingMessage('Connecting to server...');
+        
+        // Add a timeout to prevent infinite loading
+        const timeoutId = setTimeout(() => {
+          if (isLoading) {
+            setError('Loading is taking longer than expected. Please refresh the page.');
+            setIsLoading(false);
+          }
+        }, 30000); // 30 second timeout
+
         const data = resumeId 
           ? await resumeService.getResumeData(resumeId)
           : emptyResume;
+        
+        clearTimeout(timeoutId);
         setResumeData(data);
+        setError(null);
       } catch (err) {
         console.error('Error fetching resume:', err);
-        setError('Failed to load resume');
-        navigate('/dashboard');
+        setError('Failed to load resume. Please try refreshing the page.');
+        toast.error('Failed to load resume. Please check your connection and try again.');
       } finally {
         setIsLoading(false);
       }
@@ -71,16 +85,23 @@ function Resume() {
 
     fetchResume();
   }, [resumeId]);
+
 // console.log("fecthed data",resumeData);
 
-  // Debounced auto-save
+  // Debounced auto-save with loading state
   const debouncedSave = useMemo(
     () => debounce(async (data) => {
        try {
-      await resumeService.saveResumeData({ resumeId, resumeData: data });
-    } catch (error) {
-      console.error('Auto-save failed:', error);
-    }
+        setIsSaving(true);
+        await resumeService.saveResumeData({ resumeId, resumeData: data });
+        // Show subtle success indicator
+        toast.success('Auto-saved', { duration: 1000 });
+      } catch (error) {
+        console.error('Auto-save failed:', error);
+        toast.error('Auto-save failed. Please try saving manually.');
+      } finally {
+        setIsSaving(false);
+      }
     }, 10000),
     [resumeId]
   );
@@ -94,16 +115,71 @@ function Resume() {
   }, [resumeData, debouncedSave]);
 
   const handleSave = async () => {
- try {
-  // console.log("data sending to resume.js",resumeData);
-  
-    await resumeService.saveResumeData({ resumeId, resumeData });
-    toast.success('Resume saved successfully!');
-  } catch (error) {
-    console.error('Error saving resume:', error);
-    toast.error('Failed to save resume. Please check your authentication.');
-  }
+    try {
+      setIsSaving(true);
+      setLoadingMessage('Saving resume...');
+      
+      // console.log("data sending to resume.js",resumeData);
+      
+      await resumeService.saveResumeData({ resumeId, resumeData });
+      toast.success('Resume saved successfully!');
+    } catch (error) {
+      console.error('Save failed:', error);
+      toast.error('Failed to save resume. Please try again.');
+    } finally {
+      setIsSaving(false);
+    }
   };
+
+  // Show loading screen
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <h2 className="text-xl font-semibold text-gray-700">{loadingMessage}</h2>
+          {error && (
+            <div className="text-red-600 mt-4">
+              <p>{error}</p>
+              <button 
+                onClick={() => window.location.reload()} 
+                className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              >
+                Refresh Page
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Show error screen
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="text-red-600 text-6xl mb-4">⚠️</div>
+          <h2 className="text-xl font-semibold text-gray-700">Something went wrong</h2>
+          <p className="text-gray-600">{error}</p>
+          <div className="space-x-4 mt-6">
+            <button 
+              onClick={() => window.location.reload()} 
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              Refresh Page
+            </button>
+            <button 
+              onClick={() => navigate('/dashboard')} 
+              className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
+            >
+              Go to Dashboard
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
 const handleDownload = async (type) => {
   console.log(`Download type selected: ${type}`);
@@ -253,8 +329,6 @@ const handleDownload = async (type) => {
   const handleBack = () => activeStep > 0 && setActiveStep(activeStep - 1);
    const handleStepClick = (index) => setActiveStep(index);
 
-  if (isLoading) return <div className="p-8 text-center">Loading resume...</div>;
-  if (error) return <div className="p-8 text-center text-red-500">{error}</div>;
   if (!resumeData) return <div className="p-8 text-center">Resume not found</div>;
 // console.log(resumeData?.templateName);
 
@@ -330,9 +404,10 @@ const handleDownload = async (type) => {
                 <div className="flex gap-2">
                   <button
                     onClick={handleSave}
-                    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                    disabled={isSaving}
+                    className={`px-4 py-2 rounded ${isSaving ? 'bg-gray-300 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600'}`}
                   >
-                    Save
+                    {isSaving ? 'Saving...' : 'Save'}
                   </button>
                   <DownloadDropdown onSelect={handleDownload} />
                 </div>

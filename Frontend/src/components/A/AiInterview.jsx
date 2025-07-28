@@ -9,15 +9,15 @@ import { DSARound } from './DSARound';
 import { TechnicalRound } from './TechnicalRound';
 import { ProjectRound } from './ProjectRound';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, Plus, X, FileText, Briefcase, DollarSign } from 'lucide-react';
+import { Loader2, Plus, X, FileText, Briefcase, DollarSign, Zap, Target, TrendingUp, Award, Users, Star, Play, Brain, Code, Rocket } from 'lucide-react';
 
 function InterviewStepper({ profileData, onClose }) {
   const [activeStep, setActiveStep] = useState(0);
 
   const steps = [
-    { label: "DSA Round", icon: <FileText className="w-4 h-4" /> },
-    { label: "Technical Round", icon: <Briefcase className="w-4 h-4" /> },
-    { label: "Project Round", icon: <Briefcase className="w-4 h-4" /> },
+    { label: "DSA Round", icon: <Code className="w-4 h-4" />, color: "from-blue-500 to-blue-600" },
+    { label: "Technical Round", icon: <Brain className="w-4 h-4" />, color: "from-purple-500 to-purple-600" },
+    { label: "Project Round", icon: <Rocket className="w-4 h-4" />, color: "from-green-500 to-green-600" },
   ];
 
   const nextStep = () => {
@@ -34,27 +34,63 @@ function InterviewStepper({ profileData, onClose }) {
 
   return (
     <div className="relative">
-      <div className="flex justify-center mb-8">
-        <div className="flex items-center space-x-4">
-          {steps.map((step, index) => (
-            <div key={index} className="flex flex-col items-center">
-              <button
-                onClick={() => setActiveStep(index)}
-                className={`flex items-center justify-center w-10 h-10 rounded-full ${activeStep === index ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'}`}
-              >
-                {step.icon}
-              </button>
-              <span className={`mt-2 text-sm font-medium ${activeStep === index ? 'text-blue-600' : 'text-gray-500'}`}>
-                {step.label}
-              </span>
+      {/* Progress Header */}
+      <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 mb-8">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">AI Interview Practice</h2>
+            <p className="text-gray-600">Complete all rounds to ace your interview</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+              <Users className="w-4 h-4 text-white" />
             </div>
-          ))}
+            <span className="text-sm font-medium text-gray-700">Live Practice</span>
+          </div>
+        </div>
+
+        {/* Progress Steps */}
+        <div className="flex justify-center">
+          <div className="flex items-center space-x-8">
+            {steps.map((step, index) => (
+              <div key={index} className="flex flex-col items-center">
+                <button
+                  onClick={() => setActiveStep(index)}
+                  className={`flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300 ${
+                    activeStep === index 
+                      ? `bg-gradient-to-r ${step.color} text-white shadow-lg scale-110` 
+                      : index < activeStep
+                      ? 'bg-green-500 text-white'
+                      : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                  }`}
+                >
+                  {index < activeStep ? (
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                  ) : (
+                    step.icon
+                  )}
+                </button>
+                <span className={`mt-2 text-sm font-medium transition-colors duration-300 ${
+                  activeStep === index ? 'text-blue-600' : index < activeStep ? 'text-green-600' : 'text-gray-500'
+                }`}>
+                  {step.label}
+                </span>
+                {index < steps.length - 1 && (
+                  <div className={`w-16 h-1 mt-2 rounded-full transition-all duration-300 ${
+                    index < activeStep ? 'bg-green-500' : 'bg-gray-200'
+                  }`}></div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
       <button
         onClick={onClose}
-        className="absolute top-0 right-0 p-2 text-gray-400 hover:text-gray-900 transition-colors"
+        className="absolute top-0 right-0 p-3 text-gray-400 hover:text-gray-900 transition-colors bg-white rounded-full shadow-lg hover:shadow-xl"
       >
         <X className="w-5 h-5" />
       </button>
@@ -77,16 +113,16 @@ function InterviewStepper({ profileData, onClose }) {
           onClick={prevStep}
           disabled={activeStep === 0}
           variant="outline"
-          className="px-6"
+          className="px-6 py-3 border-2 hover:bg-gray-50"
         >
-          Previous
+          ← Previous
         </Button>
         <Button
           onClick={nextStep}
           disabled={activeStep === steps.length - 1}
-          className="px-6"
+          className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
         >
-          Next
+          Next →
         </Button>
       </div>
     </div>
@@ -95,7 +131,7 @@ function InterviewStepper({ profileData, onClose }) {
 
 function InterviewContainer({ profileData, activeStep }) {
   return (
-    <Card className="p-6 shadow-lg border-0">
+    <Card className="p-8 shadow-xl border-0 bg-gradient-to-br from-white to-gray-50">
       {activeStep === 0 && <DSARound profileData={profileData} />}
       {activeStep === 1 && <TechnicalRound profileData={profileData} />}
       {activeStep === 2 && <ProjectRound profileData={profileData} />}
@@ -111,10 +147,10 @@ function getDifficultyLevel(salary) {
 
 function getDifficultyColor(level) {
   switch (level) {
-    case 'Beginner': return 'bg-green-100 text-green-800';
-    case 'Intermediate': return 'bg-yellow-100 text-yellow-800';
-    case 'Advanced': return 'bg-red-100 text-red-800';
-    default: return 'bg-gray-100 text-gray-800';
+    case 'Beginner': return 'bg-green-100 text-green-800 border-green-200';
+    case 'Intermediate': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+    case 'Advanced': return 'bg-red-100 text-red-800 border-red-200';
+    default: return 'bg-gray-100 text-gray-800 border-gray-200';
   }
 }
 
@@ -130,9 +166,10 @@ function AiInterview() {
   const [loadingProfiles, setLoadingProfiles] = useState(true);
   const [processing, setProcessing] = useState(false);
   const [resumePreview, setResumePreview] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
 
-  // Fetch user profiles from MongoDB on mount
   useEffect(() => {
+    setIsVisible(true);
     const fetchProfiles = async () => {
       setLoadingProfiles(true);
       try {
@@ -205,27 +242,92 @@ function AiInterview() {
     setSelectedProfile(profile);
   };
 
+  const stats = [
+    { label: "Success Rate", value: "95%", icon: TrendingUp, color: "text-green-600" },
+    { label: "Avg. Score", value: "4.8/5", icon: Star, color: "text-yellow-600" },
+    { label: "Active Users", value: "2K+", icon: Users, color: "text-blue-600" },
+    { label: "Questions", value: "500+", icon: Brain, color: "text-purple-600" }
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-8">
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">AI Interview Prep</h1>
-            <p className="text-gray-600 mt-2">
-              Practice for your next technical interview based on your resume and experience level
-            </p>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        {/* Header Section */}
+        <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8">
+            <div>
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-4">
+                AI Interview Practice 🤖
+              </h1>
+              <p className="text-xl text-gray-600 max-w-3xl">
+                Master technical interviews with AI-powered questions tailored to your experience and skills
+              </p>
+            </div>
+            <Button 
+              onClick={handleAddProfile} 
+              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg"
+            >
+              <Plus className="w-5 h-5 mr-2" />
+              Create Profile
+            </Button>
           </div>
-          <Button onClick={handleAddProfile} className="gap-2">
-            <Plus className="w-4 h-4" />
-            Add Profile
-          </Button>
+
+          {/* Stats Cards */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+            {stats.map((stat, index) => (
+              <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <CardContent className="p-4 text-center">
+                  <div className="flex items-center justify-center mb-2">
+                    <stat.icon className={`h-6 w-6 ${stat.color}`} />
+                  </div>
+                  <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
+                  <div className="text-sm text-gray-600">{stat.label}</div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Features Section */}
+        <div className={`mb-12 transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <div className="bg-white rounded-2xl shadow-xl p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Why Choose AI Interview Practice?</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="text-center p-6">
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4">
+                  🎯
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Personalized Questions</h3>
+                <p className="text-gray-600">AI analyzes your resume to generate relevant questions</p>
+              </div>
+              <div className="text-center p-6">
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4">
+                  🧠
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Real-time Feedback</h3>
+                <p className="text-gray-600">Get instant evaluation and improvement suggestions</p>
+              </div>
+              <div className="text-center p-6">
+                <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4">
+                  📈
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Track Progress</h3>
+                <p className="text-gray-600">Monitor your performance across different rounds</p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* User Profiles List */}
-        <div className="mb-12">
-          <h2 className="text-xl font-semibold mb-4 text-gray-800">Your Interview Profiles</h2>
+        <div className={`transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">Your Interview Profiles</h2>
+            <div className="flex items-center gap-2 text-sm text-gray-600">
+              <Target className="h-4 w-4" />
+              <span>Personalized for your experience</span>
+            </div>
+          </div>
           
           {loadingProfiles ? (
             <div className="flex justify-center items-center h-32">
@@ -235,15 +337,21 @@ function AiInterview() {
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white rounded-xl p-8 text-center shadow-sm border border-dashed border-gray-300"
+              className="bg-white rounded-2xl p-12 text-center shadow-xl border-0"
             >
-              <div className="mx-auto w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-4">
-                <Briefcase className="w-8 h-8 text-blue-600" />
+              <div className="mx-auto w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mb-6">
+                <Briefcase className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No profiles found</h3>
-              <p className="text-gray-500 mb-4">Create your first interview profile to get started</p>
-              <Button onClick={handleAddProfile}>
-                Create Profile
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">No profiles yet</h3>
+              <p className="text-gray-600 mb-8 max-w-md mx-auto">
+                Create your first interview profile to start practicing with AI-powered questions tailored to your experience
+              </p>
+              <Button 
+                onClick={handleAddProfile}
+                className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Create Your First Profile
               </Button>
             </motion.div>
           ) : (
@@ -255,42 +363,57 @@ function AiInterview() {
               {userProfiles.map((profile, idx) => (
                 <motion.div
                   key={profile._id || idx}
-                  whileHover={{ y: -5 }}
-                  transition={{ duration: 0.2 }}
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
                 >
                   <Card 
-                    className="h-full cursor-pointer transition-all hover:shadow-md hover:border-blue-200"
+                    className="h-full cursor-pointer transition-all duration-300 hover:shadow-2xl border-0 bg-white overflow-hidden group"
                     onClick={() => handleCardClick(profile)}
                   >
-                    <CardHeader>
-                      <div className="flex justify-between items-start">
-                        <CardTitle className="text-lg">{profile.jobProfile}</CardTitle>
-                        <span className={`text-xs px-2 py-1 rounded-full ${getDifficultyColor(profile.difficulty)}`}>
+                    <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-white">
+                      <div className="flex justify-between items-start mb-4">
+                        <div>
+                          <h3 className="text-xl font-bold">{profile.jobProfile}</h3>
+                          <p className="text-blue-100 text-sm">Interview Profile</p>
+                        </div>
+                        <span className={`text-xs px-3 py-1 rounded-full border ${getDifficultyColor(profile.difficulty)}`}>
                           {profile.difficulty}
                         </span>
                       </div>
-                      <div className="flex items-center text-sm text-gray-500 mt-1">
-                        <DollarSign className="w-4 h-4 mr-1" />
-                        <span>{profile.salary} LPA</span>
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center">
+                          <DollarSign className="w-4 h-4 mr-2" />
+                          <span className="font-semibold">{profile.salary} LPA</span>
+                        </div>
+                        <div className="flex items-center">
+                          <Star className="w-4 h-4 mr-2" />
+                          <span className="font-semibold">4.8/5</span>
+                        </div>
                       </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex flex-wrap gap-2">
-                        {profile.skills?.slice(0, 5).map((skill, i) => (
-                          <span key={i} className="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full">
+                    </div>
+                    
+                    <CardContent className="p-6">
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {profile.skills?.slice(0, 4).map((skill, i) => (
+                          <span key={i} className="bg-blue-50 text-blue-700 text-xs px-3 py-1 rounded-full border border-blue-200">
                             {skill}
                           </span>
                         ))}
-                        {profile.skills?.length > 5 && (
-                          <span className="bg-gray-50 text-gray-500 text-xs px-2 py-1 rounded-full">
-                            +{profile.skills.length - 5} more
+                        {profile.skills?.length > 4 && (
+                          <span className="bg-gray-50 text-gray-500 text-xs px-3 py-1 rounded-full border">
+                            +{profile.skills.length - 4} more
                           </span>
                         )}
                       </div>
+                      
+                      <div className="flex items-center justify-between text-sm text-gray-500">
+                        <span>Created {new Date(profile.createdAt).toLocaleDateString()}</span>
+                        <div className="flex items-center gap-1 group-hover:text-blue-600 transition-colors">
+                          <Play className="w-4 h-4" />
+                          <span>Start Practice</span>
+                        </div>
+                      </div>
                     </CardContent>
-                    <CardFooter className="text-xs text-gray-500">
-                      Created {new Date(profile.createdAt).toLocaleDateString()}
-                    </CardFooter>
                   </Card>
                 </motion.div>
               ))}
@@ -312,11 +435,11 @@ function AiInterview() {
               initial={{ scale: 0.95, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 20 }}
-              className="bg-white rounded-xl shadow-2xl max-w-md w-full overflow-hidden"
+              className="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border-0"
             >
-              <div className="relative p-6">
+              <div className="relative p-8">
                 <button
-                  className="absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100 transition-colors"
+                  className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors"
                   onClick={() => setShowDialog(false)}
                 >
                   <X className="w-5 h-5 text-gray-500" />
@@ -324,13 +447,13 @@ function AiInterview() {
 
                 {formStep === 'form' && (
                   <>
-                    <div className="text-center mb-6">
-                      <div className="mx-auto w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-4">
-                        <FileText className="w-6 h-6 text-blue-600" />
+                    <div className="text-center mb-8">
+                      <div className="mx-auto w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mb-6">
+                        <FileText className="w-8 h-8 text-white" />
                       </div>
-                      <h2 className="text-2xl font-bold text-gray-900">Create Interview Profile</h2>
-                      <p className="text-gray-500 mt-2">
-                        Upload your resume and set your preferences to generate personalized interview questions
+                      <h2 className="text-3xl font-bold text-gray-900 mb-2">Create Interview Profile</h2>
+                      <p className="text-gray-600">
+                        Upload your resume and set preferences for personalized AI questions
                       </p>
                     </div>
                     
@@ -340,7 +463,7 @@ function AiInterview() {
                           Upload Resume (PDF/DOCX)
                         </Label>
                         <div className="mt-1">
-                          <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition-colors">
+                          <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 transition-colors bg-gray-50 hover:bg-gray-100">
                             <div className="flex flex-col items-center justify-center pt-5 pb-6 px-4">
                               {resumePreview ? (
                                 <>
@@ -401,7 +524,7 @@ function AiInterview() {
                           id="jobProfile"
                           value={jobProfile}
                           onChange={(e) => setJobProfile(e.target.value)}
-                          className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                          className="flex h-12 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm ring-offset-white placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                           required
                         >
                           <option value="">Select your job profile</option>
@@ -417,7 +540,7 @@ function AiInterview() {
 
                       <Button 
                         type="submit" 
-                        className="w-full" 
+                        className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700" 
                         disabled={processing}
                       >
                         {processing ? (
@@ -425,7 +548,12 @@ function AiInterview() {
                             <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                             Processing...
                           </>
-                        ) : 'Create Profile'}
+                        ) : (
+                          <>
+                            <Zap className="w-4 h-4 mr-2" />
+                            Create Profile
+                          </>
+                        )}
                       </Button>
                     </form>
                   </>
@@ -433,42 +561,42 @@ function AiInterview() {
 
                 {formStep === 'profile' && profileData && (
                   <div className="space-y-6">
-                    <div className="text-center mb-6">
-                      <div className="mx-auto w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mb-4">
-                        <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="text-center mb-8">
+                      <div className="mx-auto w-20 h-20 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mb-6">
+                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                         </svg>
                       </div>
-                      <h2 className="text-2xl font-bold text-gray-900">Profile Created!</h2>
-                      <p className="text-gray-500 mt-2">
+                      <h2 className="text-3xl font-bold text-gray-900 mb-2">Profile Created!</h2>
+                      <p className="text-gray-600">
                         We've analyzed your resume and created a personalized interview profile
                       </p>
                     </div>
 
                     <div className="space-y-4">
-                      <div className="bg-gray-50 p-4 rounded-lg">
-                        <h3 className="font-medium text-gray-900 mb-2">Job Profile</h3>
-                        <p className="text-gray-700">{profileData.jobProfile || jobProfile}</p>
+                      <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-xl">
+                        <h3 className="font-semibold text-gray-900 mb-3">Job Profile</h3>
+                        <p className="text-gray-700 text-lg">{profileData.jobProfile || jobProfile}</p>
                       </div>
 
-                      <div className="bg-gray-50 p-4 rounded-lg">
-                        <h3 className="font-medium text-gray-900 mb-2">Salary & Difficulty</h3>
-                        <div className="flex items-center gap-4">
+                      <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl">
+                        <h3 className="font-semibold text-gray-900 mb-3">Salary & Difficulty</h3>
+                        <div className="flex items-center gap-6">
                           <div className="flex items-center">
-                            <DollarSign className="w-4 h-4 mr-1 text-gray-600" />
-                            <span className="text-gray-700">{salaryRange} LPA</span>
+                            <DollarSign className="w-5 h-5 mr-2 text-gray-600" />
+                            <span className="text-gray-700 font-semibold">{salaryRange} LPA</span>
                           </div>
-                          <span className={`text-xs px-2 py-1 rounded-full ${getDifficultyColor(profileData.difficulty)}`}>
+                          <span className={`text-sm px-3 py-1 rounded-full border ${getDifficultyColor(profileData.difficulty)}`}>
                             {profileData.difficulty} Level
                           </span>
                         </div>
                       </div>
 
-                      <div className="bg-gray-50 p-4 rounded-lg">
-                        <h3 className="font-medium text-gray-900 mb-2">Key Skills</h3>
+                      <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl">
+                        <h3 className="font-semibold text-gray-900 mb-3">Key Skills</h3>
                         <div className="flex flex-wrap gap-2">
                           {profileData.skills.map((skill, i) => (
-                            <span key={i} className="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full">
+                            <span key={i} className="bg-white text-purple-700 text-sm px-3 py-1 rounded-full border border-purple-200">
                               {skill}
                             </span>
                           ))}
@@ -476,17 +604,17 @@ function AiInterview() {
                       </div>
 
                       {profileData.projects?.length > 0 && (
-                        <div className="bg-gray-50 p-4 rounded-lg">
-                          <h3 className="font-medium text-gray-900 mb-2">Projects</h3>
+                        <div className="bg-gradient-to-r from-yellow-50 to-orange-50 p-6 rounded-xl">
+                          <h3 className="font-semibold text-gray-900 mb-3">Projects</h3>
                           <div className="space-y-3">
                             {profileData.projects.slice(0, 2).map((project, i) => (
-                              <div key={i} className="border border-gray-200 rounded-lg p-3 bg-white">
-                                <h4 className="font-medium text-gray-900">{project.name}</h4>
+                              <div key={i} className="bg-white rounded-lg p-4 border border-orange-200">
+                                <h4 className="font-semibold text-gray-900">{project.name}</h4>
                                 <p className="text-sm text-gray-600 mt-1">{project.description}</p>
-                                <div className="mt-2">
-                                  <div className="flex flex-wrap gap-1 mt-1">
+                                <div className="mt-3">
+                                  <div className="flex flex-wrap gap-1">
                                     {project.technologies.map((tech, j) => (
-                                      <span key={j} className="bg-green-50 text-green-700 text-xs px-2 py-1 rounded-full">
+                                      <span key={j} className="bg-orange-50 text-orange-700 text-xs px-2 py-1 rounded-full border border-orange-200">
                                         {tech}
                                       </span>
                                     ))}
@@ -508,7 +636,7 @@ function AiInterview() {
                       <Button 
                         variant="outline" 
                         onClick={() => setShowDialog(false)}
-                        className="flex-1"
+                        className="flex-1 py-3 border-2"
                       >
                         Close
                       </Button>
@@ -517,8 +645,9 @@ function AiInterview() {
                           setSelectedProfile(profileData);
                           setShowDialog(false);
                         }}
-                        className="flex-1 bg-blue-600 hover:bg-blue-700"
+                        className="flex-1 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
                       >
+                        <Play className="w-4 h-4 mr-2" />
                         Start Practice
                       </Button>
                     </div>
@@ -537,15 +666,15 @@ function AiInterview() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm  flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
           >
             <motion.div 
               initial={{ scale: 0.95 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.95 }}
-              className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+              className="bg-white rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col border-0"
             >
-              <div className="overflow-y-auto p-6">
+              <div className="overflow-y-auto p-8">
                 <InterviewStepper 
                   profileData={selectedProfile} 
                   onClose={() => setSelectedProfile(null)} 

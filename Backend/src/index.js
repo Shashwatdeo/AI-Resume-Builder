@@ -9,7 +9,7 @@ import interviewRouter from "./Routes/interview.route.js"
 import fs from 'fs';
 import path from 'path';
 
-
+dotenv.config({ path: '.env' })
 
 const app = express();
 
@@ -37,26 +37,45 @@ app.use("/api/users", userRouter)
 app.use("/api/resume", resumeRouter)
 app.use("/api/interview", interviewRouter)
 
-dotenv.config(
-    {path:'.env'}
-)
+// Health check endpoint
+app.get("/health", (req, res) => {
+  res.status(200).json({ 
+    status: "OK", 
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
 
+// Start server immediately
+const port = process.env.PORT || 8000;
+const server = app.listen(port, () => {
+  console.log(`Server is running at port: ${port}`);
+});
+
+// Connect to database in background
 connnectDB()
-.then(()=>{
-    app.on("error",(error)=>{
-        console.log("ERROR: ",error );
-        throw error
-    })
-})
-.then(()=>{
-    const port=process.env.PORT || 8000
-    app.listen(port,()=>{
-        console.log(`Server is running at port: ${port}`);
-        
-    })
-})
-.catch((error)=>{
-    console.log("Mongo db connection fail");    
-})
+  .then(() => {
+    console.log("✅ MongoDB connected successfully");
+  })
+  .catch((error) => {
+    console.log("❌ MongoDB connection failed:", error.message);
+    // Don't exit the process, let the server continue running
+    // The app can work with cached data or show appropriate messages
+  });
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, shutting down gracefully');
+  server.close(() => {
+    console.log('Process terminated');
+  });
+});
+
+process.on('SIGINT', () => {
+  console.log('SIGINT received, shutting down gracefully');
+  server.close(() => {
+    console.log('Process terminated');
+  });
+});
 
 

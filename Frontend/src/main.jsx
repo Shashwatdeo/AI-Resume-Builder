@@ -16,6 +16,7 @@ import ATSChecker from './components/ATSChecker/ATSChecker.jsx'
 import AiInterview from './components/AiInterview/AiInterview.jsx'
 import ProfileView from './components/AiInterview/ProfileView.jsx'
 import InterviewPractice from './components/AiInterview/InterviewPractice.jsx'
+import SmartSuggestions from './components/SmartSuggestions.jsx'
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
     },{
       path:'/interview-practice/:id',
       element:<Protected authentication={true}><InterviewPractice/></Protected>
+    },
+    {
+      path:'/smart-suggestions',
+      element:<SmartSuggestions/>
     }
   ]
   },

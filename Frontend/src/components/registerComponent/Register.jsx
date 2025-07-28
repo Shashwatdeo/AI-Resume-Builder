@@ -40,6 +40,7 @@ function Register() {
         if (userData) dispatch(authLogin({ userData: userData.user }));
         navigate("/login");
       }
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
       setError("Invalid credentials. Please try again.");
     }
@@ -165,7 +166,7 @@ function Register() {
                   type="submit"
                   className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-lg shadow-md transition-all transform hover:-translate-y-0.5"
                 >
-                  Sign In
+                  Create Account
                 </Button>
               </form>
 
