@@ -149,7 +149,7 @@ export default function CreateProfileDialog({ isOpen, onClose, onProfileCreated 
                     e.stopPropagation();
                     setResumeFile(null);
                   }}
-                  className="mt-3 text-sm text-indigo-600 hover:text-indigo-500"
+                  className="mt-3 text-sm text-indigo-600 hover:text-indigo-500 cursor-pointer"
                 >
                   Change file
                 </Button>
@@ -215,13 +215,14 @@ export default function CreateProfileDialog({ isOpen, onClose, onProfileCreated 
             <Button
               variant="outline"
               onClick={() => setStep(1)}
+              className="cursor-pointer"
             >
               <ChevronLeft className="mr-2 h-4 w-4" />
               Back
             </Button>
           ) : (
             <DialogClose asChild>
-              <Button variant="outline">
+              <Button variant="outline" className="cursor-pointer">
                 Cancel
               </Button>
             </DialogClose>
@@ -236,6 +237,7 @@ export default function CreateProfileDialog({ isOpen, onClose, onProfileCreated 
               }
             }}
             disabled={(step === 1 && !resumeFile) || (step === 2 && !jobProfile) || isLoading}
+            className="cursor-pointer"
           >
             {isLoading ? (
               'Processing...'

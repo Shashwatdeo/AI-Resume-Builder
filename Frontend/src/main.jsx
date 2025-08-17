@@ -7,6 +7,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import App from './App.jsx'
 import Login from './components/loginComponent/Login.jsx'
 import Register from './components/registerComponent/Register.jsx'
+import ForgotPassword from './components/ForgotPassword.jsx'
 import Resume from './components/ResumeForm/Resume.jsx'
 import LandingPage from './components/LandingPage.jsx'
 import Dashboard from './components/Dashboard/Dashboard.jsx'
@@ -21,57 +22,58 @@ import SmartSuggestions from './components/SmartSuggestions.jsx'
 const router = createBrowserRouter([
   {
     path: '/',
-  element: <App/>,
-  children:[
-    {
-      path: '/',
-      element:<Protected authentication={false}><LandingPage/></Protected> 
-    },
-    {
-      path:"/resume/:id",
-    element:<Protected authentication={true}><Resume/></Protected> 
-    },
-    {
-      path: '/dashboard',
-      element:<Protected authentication={true}><Dashboard/></Protected> 
-    }
-    ,{
-      path:'/templates',
-      element:<Protected authentication={true}><ResumeTemplates/></Protected>
-    },
-    {
-      path:'/ats',
-      element:<Protected authentication={true}><ATSChecker/></Protected>
-    },{
-      path:'/ai-interview',
-      element:<Protected authentication={true}><AiInterview/></Protected>
-    },
-    {
-      path: '/profile/:id',
-      element: <Protected authentication={true}><ProfileView/></Protected>
-    },{
-      path:'/interview-practice/:id',
-      element:<Protected authentication={true}><InterviewPractice/></Protected>
-    },
-    {
-      path:'/smart-suggestions',
-      element:<SmartSuggestions/>
-    }
-  ]
-  },
-  {
-    path: '/login',
-    element: <Protected authentication={false}><Login/></Protected>
-  },
-  {
-    path: '/register',
-    element:<Protected authentication={false}><Register/></Protected>
+    element: <App/>,
+    children:[
+      {
+        path: '/',
+        element:<Protected authentication={false}><LandingPage/></Protected> 
+      },
+      {
+        path:"/resume/:id",
+        element:<Protected authentication={true}><Resume/></Protected> 
+      },
+      {
+        path: '/dashboard',
+        element:<Protected authentication={true}><Dashboard/></Protected> 
+      },
+      {
+        path:'/templates',
+        element:<Protected authentication={true}><ResumeTemplates/></Protected>
+      },
+      {
+        path:'/ats',
+        element:<Protected authentication={true}><ATSChecker/></Protected>
+      },
+      {
+        path:'/ai-interview',
+        element:<Protected authentication={true}><AiInterview/></Protected>
+      },
+      {
+        path: '/profile/:id',
+        element: <Protected authentication={true}><ProfileView/></Protected>
+      },
+      {
+        path:'/interview-practice/:id',
+        element:<Protected authentication={true}><InterviewPractice/></Protected>
+      },
+      {
+        path:'/smart-suggestions',
+        element:<SmartSuggestions/>
+      },
+      {
+        path: '/login',
+        element: <Protected authentication={false}><Login/></Protected>
+      },
+      {
+        path: '/register',
+        element:<Protected authentication={false}><Register/></Protected>
+      },
+      {
+        path: '/forgot-password',
+        element:<Protected authentication={false}><ForgotPassword/></Protected>
+      }
+    ]
   }
-
-
-  
-
-
 ])
 
 createRoot(document.getElementById('root')).render(

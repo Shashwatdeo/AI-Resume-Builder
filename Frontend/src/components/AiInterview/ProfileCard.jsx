@@ -115,7 +115,7 @@ export default function ProfileCard({ profile }) {
           <div className="mt-6">
             <Button 
               onClick={() => navigate(`/profile/${profile._id}`)}
-              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl cursor-pointer"
             >
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
@@ -135,7 +135,7 @@ export default function ProfileCard({ profile }) {
               <Button 
                 variant="ghost" 
                 size="sm" 
-                className="h-8 w-8 p-0 hover:bg-gray-200 rounded-lg transition-colors"
+                className="h-8 w-8 p-0 hover:bg-gray-200 rounded-lg transition-colors cursor-pointer"
                 onClick={(e) => e.stopPropagation()}
               >
                 <MoreVertical className="h-4 w-4" />
