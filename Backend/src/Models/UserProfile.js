@@ -7,6 +7,7 @@ const ProjectSchema = new mongoose.Schema({
 });
 
 const UserProfileSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Add user reference (not required for existing profiles)
   name: String,
   email: String,
   skills: [String],

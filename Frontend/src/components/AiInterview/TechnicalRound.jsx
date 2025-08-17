@@ -23,13 +23,26 @@ export const TechnicalRound = ({ skills, difficulty, onComplete, onBack }) => {
     const fetchQuestions = async () => {
       try {
         setLoading(true);
+        console.log('Fetching technical questions for skills:', skills, 'difficulty:', difficulty);
+        
         const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/interview/generate-technical-questions`, {
           skills,
           difficulty
+        }, {
+          withCredentials: true
         });
+        
+        console.log('Technical questions response:', response.data);
         setQuestions(response.data.questions);
       } catch (error) {
         console.error('Error fetching technical questions:', error);
+        console.error('Error response:', error.response);
+        
+        if (error.response?.status === 401) {
+          console.error('Authentication failed - user not logged in');
+        } else if (error.response?.status === 500) {
+          console.error('Server error:', error.response.data);
+        }
       } finally {
         setLoading(false);
       }
@@ -44,6 +57,8 @@ export const TechnicalRound = ({ skills, difficulty, onComplete, onBack }) => {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/interview/evaluate-technical-answer`, {
         question: questions[currentQuestionIndex],
         answer
+      }, {
+        withCredentials: true
       });
       setResults(response.data);
     } catch (error) {

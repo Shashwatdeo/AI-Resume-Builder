@@ -44,13 +44,26 @@ export const DSARound = ({ difficulty, onComplete, onBack }) => {
     const fetchQuestions = async () => {
       try {
         setLoading(true);
+        console.log('Fetching DSA questions for difficulty:', difficulty);
+        
         const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/interview/generate-dsa-questions`, {
           difficulty
+        }, {
+          withCredentials: true
         });
+        
+        console.log('DSA questions response:', response.data);
         setQuestions(response.data.questions);
         setTimeLeft(response.data.questions[0]?.timeLimit * 60 || 15 * 60);
       } catch (error) {
         console.error('Error fetching DSA questions:', error);
+        console.error('Error response:', error.response);
+        
+        if (error.response?.status === 401) {
+          console.error('Authentication failed - user not logged in');
+        } else if (error.response?.status === 500) {
+          console.error('Server error:', error.response.data);
+        }
       } finally {
         setLoading(false);
       }
@@ -83,6 +96,8 @@ const handleSubmit = async () => {
       question: questions[currentQuestionIndex],
       code,
       language
+    }, {
+      withCredentials: true
     });
     
     // Handle cases where evaluation might fail

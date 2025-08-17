@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login as authLogin } from '../../store/authSlice';
 import authService from '../../backend/auth';
+import { Eye, EyeOff } from 'lucide-react';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ function Register() {
     password: ""
   });
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -35,11 +37,11 @@ function Register() {
         password: formData.password,
       });
 
-      if (session) {
-        const userData = await authService.getCurrentUser();
-        if (userData) dispatch(authLogin({ userData: userData.user }));
-        navigate("/login");
-      }
+              if (session) {
+          const userData = await authService.getCurrentUser();
+          if (userData) dispatch(authLogin({ userData: userData.user }));
+          navigate("/login");
+        }
     // eslint-disable-next-line no-unused-vars
     } catch (error) {
       setError("Invalid credentials. Please try again.");
@@ -139,32 +141,38 @@ function Register() {
                   <div>
                     <div className="flex justify-between items-center mb-1">
                       <label className="block text-sm font-medium text-gray-700">Password</label>
-                      <Link to="/forgot-password" className="text-sm text-blue-600 hover:text-blue-500">
+                      <Link to="/forgot-password" className="text-sm text-blue-600 hover:text-blue-500 cursor-pointer">
                         Forgot password?
                       </Link>
                     </div>
                     <div className="relative">
                       <input
                         name="password"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         required
                         value={formData.password}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                         placeholder="••••••••"
                       />
-                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                        <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                        </svg>
-                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-5 w-5" />
+                        ) : (
+                          <Eye className="h-5 w-5" />
+                        )}
+                      </button>
                     </div>
                   </div>
                 </div>
 
                 <Button
                   type="submit"
-                  className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-lg shadow-md transition-all transform hover:-translate-y-0.5"
+                  className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-lg shadow-md transition-all transform hover:-translate-y-0.5 cursor-pointer"
                 >
                   Create Account
                 </Button>
@@ -172,7 +180,7 @@ function Register() {
 
               <div className="mt-8 text-center text-sm text-gray-500">
                 Already have an account? {' '}
-                <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500">
+                <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500 cursor-pointer">
                   Sign In
                 </Link>
               </div>

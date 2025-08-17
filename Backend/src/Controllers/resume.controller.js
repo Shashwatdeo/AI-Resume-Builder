@@ -377,6 +377,7 @@ export const AnalyzeResume = async (req, res) => {
     // console.log("Parsed resume data:", parsedData);
 
   const userProfile = new UserProfile({
+      user: req.user._id, // Associate profile with the authenticated user
       ...parsedData,
       jobProfile: req.body.jobProfile,
       salary: req.body.salary,
@@ -399,8 +400,14 @@ function getDifficultyLevel(salary) {
 
 export const getAllProfiles = async (req, res) => {
    try {
-    const profiles = await UserProfile.find({});
-    res.status(200).json(profiles);
+    // Only fetch profiles belonging to the authenticated user
+    const userId = req.user._id;
+    const profiles = await UserProfile.find({ user: userId });
+    
+    // Filter out any profiles without user association (legacy profiles)
+    const validProfiles = profiles.filter(profile => profile.user);
+    
+    res.status(200).json(validProfiles);
   } catch (error) {
     console.error("Error in getAllProfiles:", error);
     res.status(500).json({ 
@@ -411,10 +418,11 @@ export const getAllProfiles = async (req, res) => {
 
 export const getAllProfilesId = async (req, res) => {
     try {
-    const profile = await UserProfile.findById(req.params.id);
+    const userId = req.user._id;
+    const profile = await UserProfile.findOne({ _id: req.params.id, user: userId });
     console.log("Fetching profile with ID:", req.params.id);
     if (!profile) {
-      return res.status(404).json({ error: 'Profile not found' });
+      return res.status(404).json({ error: 'Profile not found or not owned by user' });
     }
     res.json(profile);
   } catch (error) {
@@ -425,10 +433,11 @@ export const getAllProfilesId = async (req, res) => {
 export const deleteProfile = async (req, res) => {
   try {
     const { id } = req.params;
+    const userId = req.user._id;
     
-    const profile = await UserProfile.findById(id);
+    const profile = await UserProfile.findOne({ _id: id, user: userId });
     if (!profile) {
-      return res.status(404).json({ error: 'Profile not found' });
+      return res.status(404).json({ error: 'Profile not found or not owned by user' });
     }
 
     await UserProfile.findByIdAndDelete(id);

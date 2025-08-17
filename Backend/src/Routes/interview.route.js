@@ -6,16 +6,16 @@ import { upload } from "../Middleware/multer.js";
 const router = Router()
 
 
-router.route("/userProfiles").post(upload.single('resume'),AnalyzeResume);
+router.route("/userProfiles").post(verifyJWT, upload.single('resume'), AnalyzeResume);
 router.route("/").get(verifyJWT,getAllProfiles);
 router.route("/:id").get(verifyJWT, getAllProfilesId);
-router.route("/:id").delete(deleteProfile)
-router.route("/generate-dsa-questions").post(generateDsaQuestions)
-router.route("/evaluate-dsa").post(evaluateDsaCode)
-router.route("/generate-technical-questions").post(generateTechnicalQuestions);
-router.route("/evaluate-technical-answer").post(evaluateTechnicalAnswer);
-router.route("/generate-project-questions").post(generateProjectQuestions);
-router.route("/evaluate-project-answer").post(evaluateProjectAnswer);
+router.route("/:id").delete(verifyJWT, deleteProfile)
+router.route("/generate-dsa-questions").post(verifyJWT, generateDsaQuestions)
+router.route("/evaluate-dsa").post(verifyJWT, evaluateDsaCode)
+router.route("/generate-technical-questions").post(verifyJWT, generateTechnicalQuestions);
+router.route("/evaluate-technical-answer").post(verifyJWT, evaluateTechnicalAnswer);
+router.route("/generate-project-questions").post(verifyJWT, generateProjectQuestions);
+router.route("/evaluate-project-answer").post(verifyJWT, evaluateProjectAnswer);
 
 
 export default router

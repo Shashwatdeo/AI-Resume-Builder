@@ -81,7 +81,7 @@ export default function ProfileCard({ profile }) {
           </div>
         </CardHeader>
         
-        <CardContent className="px-4 pb-2" onClick={() => navigate(`/profile/${profile._id}`)}>
+        <CardContent className="px-4 pb-2">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center">
               <IndianRupee className="h-4 w-4 mr-1" />
@@ -106,6 +106,16 @@ export default function ProfileCard({ profile }) {
                 </span>
               )}
             </div>
+          </div>
+
+          {/* Open Profile Button */}
+          <div className="mt-4">
+            <Button 
+              onClick={() => navigate(`/profile/${profile._id}`)}
+              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-all transform hover:-translate-y-0.5 cursor-pointer"
+            >
+              Open Profile
+            </Button>
           </div>
         </CardContent>
 

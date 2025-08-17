@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { Upload, FileText, Briefcase, DollarSign, ChevronLeft } from 'lucide-react';
 import { toast,Toaster } from 'sonner';
+import axios from 'axios';
 import {
   Dialog,
   DialogContent,
@@ -13,6 +14,8 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 
 export default function CreateProfileDialog({ isOpen, onClose, onProfileCreated }) {
+  console.log('CreateProfileDialog rendered with props:', { isOpen, onClose, onProfileCreated });
+  
   const [step, setStep] = useState(1);
   const [resumeFile, setResumeFile] = useState(null);
   const [jobProfile, setJobProfile] = useState('');
@@ -53,34 +56,45 @@ export default function CreateProfileDialog({ isOpen, onClose, onProfileCreated 
     setIsLoading(true);
     
     try {
+      console.log('Starting profile creation...');
+      console.log('User authenticated:', !!localStorage.getItem('accessToken'));
+      
       const formData = new FormData();
       formData.append('resume', resumeFile);
       formData.append('jobProfile', jobProfile);
       formData.append('salary', salary.toString());
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/interview/userProfiles`, {
-        method: 'POST',
-        body: formData,
+      console.log('Sending request to:', `${import.meta.env.VITE_API_URL}/api/interview/userProfiles`);
+      
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/interview/userProfiles`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true,
       });
 
-      if (!response.ok) {
+      console.log('Response received:', response);
+
+      if (response.status === 201 || response.status === 200) {
+        onProfileCreated(response.data);
+        toast.success('Your interview profile has been created.');
+        onClose();
+        setStep(1);
+        setResumeFile(null);
+        setJobProfile('');
+        setSalary(10);
+      } else {
         throw new Error('Failed to create profile');
       }
-
-      const data = await response.json();
-      onProfileCreated(data);
-      
-      toast.success('Your interview profile has been created.');
-      
-      onClose();
-      setStep(1);
-      setResumeFile(null);
-      setJobProfile('');
-      setSalary(10);
     } catch (error) {
-
-      toast.error('Error creating profile');
       console.error('Error creating profile:', error);
+      console.error('Error response:', error.response);
+      
+      if (error.response?.status === 401) {
+        toast.error('Authentication failed. Please log in again.');
+      } else {
+        toast.error('Error creating profile: ' + (error.response?.data?.message || error.message));
+      }
     } finally {
       setIsLoading(false);
     }
@@ -88,6 +102,7 @@ export default function CreateProfileDialog({ isOpen, onClose, onProfileCreated 
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
+      {console.log('Dialog render with isOpen:', isOpen)}
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>

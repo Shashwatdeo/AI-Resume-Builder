@@ -29,15 +29,28 @@ export const ProjectRound = ({ projects, onComplete,onBack}) => {
   const fetchQuestions = async (project) => {
     try {
       setLoading(true);
+      console.log('Fetching project questions for project:', project);
+      
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/interview/generate-project-questions`, {
         project
+      }, {
+        withCredentials: true
       });
+      
+      console.log('Project questions response:', response.data);
       setQuestions(response.data.questions);
       setCurrentQuestionIndex(0);
       setResults(null);
       setAnswer('');
     } catch (error) {
       console.error('Error fetching project questions:', error);
+      console.error('Error response:', error.response);
+      
+      if (error.response?.status === 401) {
+        console.error('Authentication failed - user not logged in');
+      } else if (error.response?.status === 500) {
+        console.error('Server error:', error.response.data);
+      }
     } finally {
       setLoading(false);
     }
@@ -49,6 +62,8 @@ export const ProjectRound = ({ projects, onComplete,onBack}) => {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/interview/evaluate-project-answer`, {
         question: questions[currentQuestionIndex],
         answer
+      }, {
+        withCredentials: true
       });
       setResults(response.data);
     } catch (error) {
