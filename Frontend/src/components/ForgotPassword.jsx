@@ -18,12 +18,35 @@ function ForgotPassword() {
 
     setIsLoading(true);
     
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/forgot-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setIsSubmitted(true);
+        toast.success(data.message);
+        
+        // For development/testing, show the reset URL in console
+        if (data.resetUrl) {
+          console.log('Password Reset URL:', data.resetUrl);
+          toast.info('Check console for reset URL (development mode)');
+        }
+      } else {
+        toast.error(data.message || 'Failed to send reset email');
+      }
+    } catch (error) {
+      console.error('Error sending reset email:', error);
+      toast.error('Network error. Please try again.');
+    } finally {
       setIsLoading(false);
-      setIsSubmitted(true);
-      toast.success('Password reset link sent to your email!');
-    }, 2000);
+    }
   };
 
   if (isSubmitted) {
@@ -41,6 +64,9 @@ function ForgotPassword() {
             </p>
             <p className="text-sm text-gray-500 mb-8">
               Click the link in your email to reset your password. If you don't see it, check your spam folder.
+            </p>
+            <p className="text-sm text-blue-600 mb-6 p-3 bg-blue-50 rounded-lg border border-blue-200">
+              <strong>Development Note:</strong> Since this is a demo, the reset URL is logged to the console. Check your browser's developer console (F12) to see the reset link.
             </p>
             <div className="space-y-3">
               <Button

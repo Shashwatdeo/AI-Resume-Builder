@@ -8,6 +8,7 @@ import App from './App.jsx'
 import Login from './components/loginComponent/Login.jsx'
 import Register from './components/registerComponent/Register.jsx'
 import ForgotPassword from './components/ForgotPassword.jsx'
+import ResetPassword from './components/ResetPassword.jsx'
 import Resume from './components/ResumeForm/Resume.jsx'
 import LandingPage from './components/LandingPage.jsx'
 import Dashboard from './components/Dashboard/Dashboard.jsx'
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
       {
         path: '/forgot-password',
         element:<Protected authentication={false}><ForgotPassword/></Protected>
+      },
+      {
+        path: '/reset-password/:token',
+        element:<Protected authentication={false}><ResetPassword/></Protected>
       }
     ]
   }
