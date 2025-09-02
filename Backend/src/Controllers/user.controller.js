@@ -30,18 +30,22 @@ export const registerUser = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   try {
+    const t0 = process.hrtime.bigint();
     const { email, password } = req.body;
-
+    const t1 = process.hrtime.bigint();
+    
     if (!email || !password) {
       return res.status(400).json({ success: false, message: "All fields are required" });
     }
 
     const user = await User.findOne({ email }).select("+password +refreshToken");
+    const t2 = process.hrtime.bigint();
     if (!user) {
       return res.status(401).json({ success: false, message: "Invalid credentials" });
     }
 
     const isPasswordValid = await user.isPasswordCorrect(password);
+    const t3 = process.hrtime.bigint();
     if (!isPasswordValid) {
       return res.status(401).json({ success: false, message: "Invalid credentials" });
     }
@@ -51,8 +55,10 @@ export const loginUser = async (req, res) => {
 
     user.refreshToken = refreshToken;
     await user.save({ validateBeforeSave: false });
+    const t4 = process.hrtime.bigint();
 
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
+    const t5 = process.hrtime.bigint();
 
     res.cookie("accessToken", accessToken, {
     httpOnly: true,
@@ -68,6 +74,14 @@ export const loginUser = async (req, res) => {
     maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
   });
 
+    const ms = (a,b) => Number(b - a) / 1_000_000;
+    res.setHeader('X-Login-ParseBody', `${ms(t0, t1).toFixed(1)}ms`);
+    res.setHeader('X-Login-FindUser', `${ms(t1, t2).toFixed(1)}ms`);
+    res.setHeader('X-Login-VerifyPassword', `${ms(t2, t3).toFixed(1)}ms`);
+    res.setHeader('X-Login-SaveRefresh', `${ms(t3, t4).toFixed(1)}ms`);
+    res.setHeader('X-Login-FetchUser', `${ms(t4, t5).toFixed(1)}ms`);
+    res.setHeader('X-Login-Total', `${ms(t0, t5).toFixed(1)}ms`);
+
     return res.status(200).json({
       success: true,
       message: "Login successful",
@@ -75,6 +89,7 @@ export const loginUser = async (req, res) => {
       user: loggedInUser
     });
   } catch (error) {
+    try { res.setHeader('X-Login-Error-At', process.hrtime.bigint().toString()); } catch {}
     return res.status(500).json({
       success: false,
       message: error.message || "Login failed"

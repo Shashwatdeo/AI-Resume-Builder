@@ -9,6 +9,10 @@ import { parseResumeWithGemini } from "../resumeParser.js";
 import executeCode from "../judge0.js";
 import { UserProfile } from "../Models/UserProfile.js";
 
+// In-memory cache for DSA questions (per difficulty)
+const dsaCache = new Map();
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
 
 export const saveResumeData = async (req, res) => {
   try {
@@ -455,7 +459,21 @@ export const deleteProfile = async (req, res) => {
 
 export const generateDsaQuestions = async (req, res) => {
   try {
+    const t0 = process.hrtime.bigint();
     const { difficulty } = req.body;
+    const t1 = process.hrtime.bigint();
+
+    // Check cache first
+    const cacheKey = `dsa_${difficulty}`;
+    const cached = dsaCache.get(cacheKey);
+    if (cached && (Date.now() - cached.timestamp) < CACHE_TTL_MS) {
+      const tCache = process.hrtime.bigint();
+      const ms = (a,b) => Number(b - a) / 1_000_000;
+      res.setHeader('X-DSA-Cache-Hit', 'true');
+      res.setHeader('X-DSA-Cache-Time', `${ms(t0, tCache).toFixed(1)}ms`);
+      return res.json(cached.data);
+    }
+
     const prompt = `
         Generate 4 Data Structures and Algorithms questions for a ${difficulty} level candidate.
         For each question provide:
@@ -486,17 +504,39 @@ export const generateDsaQuestions = async (req, res) => {
         }
       `;
   
+      const t2 = process.hrtime.bigint();
       const result = await getGeminiCompletion(prompt);
+      const t3 = process.hrtime.bigint();
       console.log("Generated DSA questions:", result);
       
       const jsonStart = result.indexOf('{');
       const jsonEnd = result.lastIndexOf('}') + 1;
       const jsonString = result.slice(jsonStart, jsonEnd);
+      const t4 = process.hrtime.bigint();
+      const parsedData = JSON.parse(jsonString);
 
-      res.json(JSON.parse(jsonString));
-      
+      // Cache the result
+      dsaCache.set(cacheKey, {
+        data: parsedData,
+        timestamp: Date.now()
+      });
+
+      // Set timing headers
+      const ms = (a,b) => Number(b - a) / 1_000_000;
+      res.setHeader('X-DSA-ParseBody', `${ms(t0, t1).toFixed(1)}ms`);
+      res.setHeader('X-DSA-Gemini', `${ms(t2, t3).toFixed(1)}ms`);
+      res.setHeader('X-DSA-Parse', `${ms(t3, t4).toFixed(1)}ms`);
+      res.setHeader('X-DSA-Total', `${ms(t0, t4).toFixed(1)}ms`);
+      res.setHeader('X-DSA-Cache-Hit', 'false');
+
+      res.json(parsedData);
       
   } catch (error) {
+    try {
+      const errEnd = process.hrtime.bigint();
+      const ms = (a,b) => Number(b - t0) / 1_000_000;
+      res.setHeader('X-DSA-Error-At', `${ms.toFixed(1)}ms`);
+    } catch {}
     console.error('Error generating DSA questions:', error);
     res.status(500).json({ error: 'Failed to generate DSA questions' });
     

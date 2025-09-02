@@ -13,6 +13,7 @@ function Login() {
     password: ""
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,6 +29,8 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    if (loading) return;
+    setLoading(true);
     try {
       // console.log(formData);
       
@@ -41,9 +44,11 @@ function Login() {
         if (userData) dispatch(authLogin({ userData: userData.user }));
         navigate("/");
       }
-    } catch (error) {
+    } catch {
       toast.error("Login failed. Please check your credentials.");
       setError("Invalid credentials. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -145,8 +150,9 @@ function Login() {
                 <Button
                   type="submit"
                   className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-lg shadow-md transition-all transform hover:-translate-y-0.5 cursor-pointer"
+                  disabled={loading}
                 >
-                  Sign In
+                  {loading ? "Signing In..." : "Sign In"}
                 </Button>
               </form>
 

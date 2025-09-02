@@ -152,8 +152,22 @@ const handleSubmit = async () => {
 
   if (loading && !questions.length) {
     return (
-      <div className="p-6 flex items-center justify-center h-64">
+      <div className="p-6 flex flex-col items-center justify-center h-64 space-y-4">
         <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
+        <div className="text-center">
+          <p className="text-gray-600 font-medium">Generating DSA Questions...</p>
+          <p className="text-sm text-gray-500">This may take a few seconds</p>
+        </div>
+        {/* Skeleton loader for questions */}
+        <div className="w-full max-w-2xl space-y-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="animate-pulse">
+              <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+              <div className="h-3 bg-gray-200 rounded w-full mb-1"></div>
+              <div className="h-3 bg-gray-200 rounded w-5/6"></div>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }

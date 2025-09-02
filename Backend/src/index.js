@@ -23,6 +23,28 @@ app.use(cors({
   credentials: true,
 }));
 
+// Simple request timing middleware and fast OPTIONS handling
+app.use((req, res, next) => {
+  const startHrTime = process.hrtime.bigint();
+  res.setHeader('X-Request-Start', Date.now().toString());
+
+  // Handle CORS preflight quickly and cache it
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Max-Age', '86400'); // 24h
+    return res.sendStatus(204);
+  }
+
+  res.on('finish', () => {
+    const endHrTime = process.hrtime.bigint();
+    const durationMs = Number(endHrTime - startHrTime) / 1_000_000;
+    // Do not set headers after they are sent; just log
+    try {
+      console.log(`${req.method} ${req.originalUrl} - ${durationMs.toFixed(1)}ms`);
+    } catch {}
+  });
+  next();
+});
+
 app.use(express.json({ limit: '5mb' })); // or even higher if needed
 app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 app.use(cookieParser())
