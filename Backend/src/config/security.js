@@ -40,7 +40,8 @@ export const SECURITY_CONFIG = {
       "http://localhost:5173",
       "http://localhost:5174",
       "http://localhost:8080",
-      "https://ai-resumex-builder.vercel.app"
+      "https://ai-resumex-builder.vercel.app",
+      "https://ai-resume-builder-7c0c.onrender.com"
     ],
     CREDENTIALS: true,
     MAX_AGE: 86400 // 24 hours

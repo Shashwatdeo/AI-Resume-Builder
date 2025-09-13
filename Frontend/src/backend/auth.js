@@ -26,13 +26,28 @@ export class AuthService{
 
     async getCurrentUser() {
         try {
-            const response= await axios.get(`${API_URL}/api/users/currentUser`, {
-        withCredentials: true, 
-        })
-        // console.log(response.data);
-        
-        return response.data;
+            // Try with cookies first
+            let response = await axios.get(`${API_URL}/api/users/currentUser`, {
+                withCredentials: true, 
+            });
+            return response.data;
         } catch (error) {
+            // If cookies fail, try with Authorization header
+            const token = localStorage.getItem('accessToken');
+            if (token) {
+                try {
+                    const response = await axios.get(`${API_URL}/api/users/currentUser`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        },
+                        withCredentials: true
+                    });
+                    return response.data;
+                } catch (headerError) {
+                    console.log("getCurrentUser with token :: error", headerError);
+                    localStorage.removeItem('accessToken');
+                }
+            }
             console.log("getCurrentUser :: error", error);
         }
 
@@ -46,8 +61,12 @@ export class AuthService{
             { withCredentials: true } 
             );
 
-    //   console.log(response);
-      return response
+            // Store tokens in localStorage as fallback for cross-domain issues
+            if (response.data.accessToken) {
+                localStorage.setItem('accessToken', response.data.accessToken);
+            }
+
+            return response
       
         } catch (error) {
             console.log("login :: error", error);
@@ -56,15 +75,17 @@ export class AuthService{
     }
 
     async logout() {
-
         try {
             await axios.post(`${API_URL}/api/users/logout`, {}, {
             withCredentials: true,
             });
-
+            // Clear localStorage token on logout
+            localStorage.removeItem('accessToken');
         } catch (error) {
             toast.error("Logout failed. Please try again.");
             console.log("logout :: error", error);
+            // Clear localStorage token even if logout fails
+            localStorage.removeItem('accessToken');
         }
     }
 }

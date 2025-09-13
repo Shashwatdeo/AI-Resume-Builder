@@ -15,10 +15,14 @@ export const registerUser = async (req, res) => {
     const user = await User.create({ name, email, password });
     const createdUser = await User.findById(user._id).select("-password -refreshToken");
 
-    return res.status(201).json({
+    return res.status(200).json({
       success: true,
-      message: "User registered successfully",
-      user: createdUser
+      message: "User logged in successfully",
+      user: createdUser,
+      tokens: {
+        accessToken: user.generateAccessToken(),
+        refreshToken: user.generateRefreshToken()
+      }
     });
   } catch (error) {
     return res.status(500).json({
@@ -67,15 +71,15 @@ export const loginUser = async (req, res) => {
     
     res.cookie("accessToken", accessToken, {
     httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? 'None' : 'Lax',
+    secure: true, // Always secure for production deployment
+    sameSite: 'None', // Required for cross-origin cookies
     maxAge: 10 * 24 * 60 * 60 * 1000 // 10 days to match JWT expiry
   });
 
     res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? 'None' : 'Lax',
+    secure: true, // Always secure for production deployment
+    sameSite: 'None', // Required for cross-origin cookies
     maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days to match JWT expiry
   });
 

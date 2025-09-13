@@ -47,8 +47,8 @@ const tryRefreshToken = async (req, res, next) => {
     const isProduction = process.env.NODE_ENV === 'production';
     res.cookie("accessToken", newAccessToken, {
       httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? 'None' : 'Lax',
+      secure: true, // Always secure for production deployment
+      sameSite: 'None', // Required for cross-origin cookies
       maxAge: 10 * 24 * 60 * 60 * 1000 // 10 days to match JWT expiry
     });
 
