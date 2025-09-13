@@ -37,14 +37,37 @@ function Register() {
         password: formData.password,
       });
 
-              if (session) {
-          const userData = await authService.getCurrentUser();
-          if (userData) dispatch(authLogin({ userData: userData.user }));
-          navigate("/login");
-        }
-    // eslint-disable-next-line no-unused-vars
+      if (session && session.data && session.data.success) {
+        // Show success message and redirect to login
+        setError("");
+        // You could add a success state here if needed
+        navigate("/login", { 
+          state: { 
+            message: "Account created successfully! Please log in.",
+            type: "success" 
+          } 
+        });
+      } else {
+        setError(session?.data?.message || "Registration failed. Please try again.");
+      }
     } catch (error) {
-      setError("Invalid credentials. Please try again.");
+      console.error("Registration error:", error);
+      if (error.response && error.response.data) {
+        const errorData = error.response.data;
+        if (errorData.errors && errorData.errors.length > 0) {
+          // Display specific validation errors
+          const errorMessages = errorData.errors.map(err => `${err.field}: ${err.message}`).join(', ');
+          setError(`Validation failed: ${errorMessages}`);
+        } else if (errorData.message) {
+          setError(errorData.message);
+        } else {
+          setError("Registration failed. Please try again.");
+        }
+      } else if (error.message) {
+        setError(error.message);
+      } else {
+        setError("Registration failed. Please check your connection and try again.");
+      }
     }
   };
 
@@ -90,6 +113,9 @@ function Register() {
 
                 <div className="space-y-4">
                     <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                    <div className="text-xs text-gray-500 mb-1">
+                      2-50 characters, letters and spaces only
+                    </div>
                     <div className="relative">
                       <input
                         name="name"
@@ -144,6 +170,9 @@ function Register() {
                       <Link to="/forgot-password" className="text-sm text-blue-600 hover:text-blue-500 cursor-pointer">
                         Forgot password?
                       </Link>
+                    </div>
+                    <div className="text-xs text-gray-500 mb-2">
+                      Must be 6+ characters with uppercase, lowercase, and number
                     </div>
                     <div className="relative">
                       <input

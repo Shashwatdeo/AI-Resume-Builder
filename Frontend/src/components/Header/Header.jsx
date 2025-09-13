@@ -8,6 +8,7 @@ import LogoutBtn from './LogoutBtn.jsx'
 function Header() {
 
   const authStatus = useSelector((state) => state.auth.status);
+  const userData = useSelector((state) => state.auth.userData);
 
   return (
     <header>
@@ -44,7 +45,15 @@ function Header() {
                   </Link>
                 </Button>
               </div>
-              <div>
+              <div className="flex items-center gap-4">
+                {userData && (
+                  <div className="flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 rounded-xl border border-blue-200">
+                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                      {userData.name?.charAt(0).toUpperCase()}
+                    </div>
+                    <span className="text-gray-700 font-medium">Welcome, {userData.name}!</span>
+                  </div>
+                )}
                 <LogoutBtn/>
               </div>
               </>

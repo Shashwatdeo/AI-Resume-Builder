@@ -52,8 +52,26 @@ app.use('/api/', apiLimiter);
 const allowedOrigins = securitySettings.CORS.ALLOWED_ORIGINS;
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      // In development, allow all origins to prevent connection issues
+      if (process.env.NODE_ENV === 'development') {
+        callback(null, true);
+      } else {
+        console.log('CORS blocked origin:', origin);
+        callback(new Error('Not allowed by CORS'));
+      }
+    }
+  },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  preflightContinue: false,
+  optionsSuccessStatus: 200
 }));
 
 // HTTPS enforcement in production
@@ -73,16 +91,10 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-// Simple request timing middleware and fast OPTIONS handling
+// Simple request timing middleware
 app.use((req, res, next) => {
   const startHrTime = process.hrtime.bigint();
   res.setHeader('X-Request-Start', Date.now().toString());
-
-  // Handle CORS preflight quickly and cache it
-  if (req.method === 'OPTIONS') {
-    res.setHeader('Access-Control-Max-Age', '86400'); // 24h
-    return res.sendStatus(204);
-  }
 
   res.on('finish', () => {
     const endHrTime = process.hrtime.bigint();
@@ -97,6 +109,15 @@ app.use((req, res, next) => {
 
 app.use(express.json({ limit: '5mb' })); // or even higher if needed
 app.use(express.urlencoded({ extended: true, limit: '5mb' }));
+
+// Add connection timeout and keep-alive settings
+app.use((req, res, next) => {
+  req.setTimeout(120000); // 2 minutes timeout for long operations
+  res.setTimeout(120000);
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('Keep-Alive', 'timeout=30, max=100');
+  next();
+});
 app.use(cookieParser())
 app.use(express.static("public"))
 
@@ -134,6 +155,22 @@ connnectDB()
     // Don't exit the process, let the server continue running
     // The app can work with cached data or show appropriate messages
   });
+
+// Error handling for uncaught exceptions
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+  // Don't exit the process, just log the error
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  // Don't exit the process, just log the error
+});
+
+// Handle server errors
+server.on('error', (error) => {
+  console.error('Server error:', error);
+});
 
 // Graceful shutdown
 process.on('SIGTERM', () => {

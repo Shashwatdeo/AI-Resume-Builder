@@ -16,9 +16,11 @@ export class AuthService{
       return response
       
         } catch (error) {
-            toast.error("Registration failed. Please try again.");
             console.log("register :: error", error);
             
+            // Let the component handle the error display
+            // Don't show toast here to avoid duplicate error messages
+            throw error; // Re-throw to let the component handle it
         }
     }
 
@@ -48,9 +50,8 @@ export class AuthService{
       return response
       
         } catch (error) {
-            toast.error("Login failed. Please check your credentials.");
             console.log("login :: error", error);
-            
+            throw error; // Re-throw to let the component handle it
         }
     }
 

@@ -34,6 +34,7 @@ export const loginUser = async (req, res) => {
     const { email, password } = req.body;
     const t1 = process.hrtime.bigint();
     
+    
     if (!email || !password) {
       return res.status(400).json({ success: false, message: "All fields are required" });
     }
@@ -46,6 +47,8 @@ export const loginUser = async (req, res) => {
 
     const isPasswordValid = await user.isPasswordCorrect(password);
     const t3 = process.hrtime.bigint();
+    
+    
     if (!isPasswordValid) {
       return res.status(401).json({ success: false, message: "Invalid credentials" });
     }
@@ -60,18 +63,20 @@ export const loginUser = async (req, res) => {
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
     const t5 = process.hrtime.bigint();
 
+    const isProduction = process.env.NODE_ENV === 'production';
+    
     res.cookie("accessToken", accessToken, {
     httpOnly: true,
-    secure: true,
-    sameSite: 'None',
-    maxAge: 15 * 60 * 1000 // 15 minutes
+    secure: isProduction,
+    sameSite: isProduction ? 'None' : 'Lax',
+    maxAge: 10 * 24 * 60 * 60 * 1000 // 10 days to match JWT expiry
   });
 
     res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    secure: true,
-    sameSite: 'None',
-    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    secure: isProduction,
+    sameSite: isProduction ? 'None' : 'Lax',
+    maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days to match JWT expiry
   });
 
     const ms = (a,b) => Number(b - a) / 1_000_000;

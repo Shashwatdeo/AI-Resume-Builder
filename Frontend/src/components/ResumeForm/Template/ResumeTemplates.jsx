@@ -6,6 +6,8 @@ import SpecializedPreview from './SpecializedPreview';
 import resumeService from '../../../backend/resume.js';
 import { Button } from "../../ui/button.jsx";
 import { Check, Star, Eye, Download, Zap, Award, TrendingUp } from 'lucide-react';
+import generalTemplateImg from '../../../assets/general-template.jpg';
+import specializedTemplateImg from '../../../assets/specialized-template.jpg';
 import {
   Dialog,
   DialogContent,
@@ -30,16 +32,15 @@ function ResumeTemplates() {
     setIsVisible(true);
   }, []);
 
-  const backendUrl = import.meta.env.VITE_API_URL;
   const templates = [
     {
       id: 'general',
       name: 'General Resume',
       description: 'Professional format suitable for most industries',
       longDescription: 'Perfect for entry-level positions and career changers. Clean, traditional layout that works well with ATS systems.',
-      thumbnail: `${backendUrl}/uploads/general-template.jpg`,
+      thumbnail: generalTemplateImg,
       previewComponent: GeneralPreview,
-      previewImage: `${backendUrl}/uploads/general-template.jpg`,
+      previewImage: generalTemplateImg,
       features: ['ATS Optimized', 'Professional Design', 'Easy to Customize', 'Industry Standard'],
       rating: 4.8,
       usage: '85% of users',
@@ -52,9 +53,9 @@ function ResumeTemplates() {
       name: 'Specialized Resume',
       description: 'Tailored for specific roles with a modern design',
       longDescription: 'Modern design with enhanced visual appeal. Great for experienced professionals and creative roles.',
-      thumbnail: `${backendUrl}/uploads/specialized-template.jpg`,
+      thumbnail: specializedTemplateImg,
       previewComponent: SpecializedPreview,
-      previewImage: `${backendUrl}/uploads/specialized-template.jpg`,
+      previewImage: specializedTemplateImg,
       features: ['Modern Design', 'Visual Impact', 'Creative Layout', 'Stand Out'],
       rating: 4.9,
       usage: '65% of users',

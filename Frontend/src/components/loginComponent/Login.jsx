@@ -32,8 +32,6 @@ function Login() {
     if (loading) return;
     setLoading(true);
     try {
-      // console.log(formData);
-      
       const session = await authService.login({
         email: formData.email,
         password: formData.password,
@@ -44,9 +42,21 @@ function Login() {
         if (userData) dispatch(authLogin({ userData: userData.user }));
         navigate("/");
       }
-    } catch {
-      toast.error("Login failed. Please check your credentials.");
-      setError("Invalid credentials. Please try again.");
+    } catch (error) {
+      // Show error for authentication failures
+      if (error.response?.status === 401) {
+        toast.error("Invalid credentials. Please check your email and password.");
+        setError("Invalid email or password. Please try again.");
+      } else if (error.message && error.message.includes('Network Error')) {
+        toast.error("Network error. Please check your connection.");
+        setError("Unable to connect. Please check your internet connection.");
+      } else if (error.response?.status >= 500) {
+        toast.error("Server error. Please try again later.");
+        setError("Server is temporarily unavailable. Please try again later.");
+      } else {
+        toast.error("Login failed. Please try again.");
+        setError("Something went wrong. Please try again.");
+      }
     } finally {
       setLoading(false);
     }

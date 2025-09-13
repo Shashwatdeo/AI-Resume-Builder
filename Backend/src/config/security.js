@@ -25,7 +25,7 @@ export const SECURITY_CONFIG = {
     },
     AUTH: {
       windowMs: 15 * 60 * 1000, // 15 minutes
-      max: 5 // login attempts per window
+      max: 50 // login attempts per window (increased for development)
     },
     API: {
       windowMs: 15 * 60 * 1000, // 15 minutes
@@ -36,7 +36,10 @@ export const SECURITY_CONFIG = {
   // CORS settings
   CORS: {
     ALLOWED_ORIGINS: [
+      "http://localhost:3000",
       "http://localhost:5173",
+      "http://localhost:5174",
+      "http://localhost:8080",
       "https://ai-resumex-builder.vercel.app"
     ],
     CREDENTIALS: true,
