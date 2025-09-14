@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Moon, Sun, Download, User, Mail, Phone, Calendar, GraduationCap, Briefcase } from 'lucide-react';
+import { Moon, Sun, Download, User, Mail, Phone, Calendar, GraduationCap, Briefcase, FileText, Award, TrendingUp, Menu, X } from 'lucide-react';
 
 const ResponsiveResumeBuilder = () => {
   const [darkMode, setDarkMode] = useState(false);
+  const [activeSection, setActiveSection] = useState('builder');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -13,6 +15,30 @@ const ResponsiveResumeBuilder = () => {
     education: [{ institution: '', degree: '', graduationDate: '', gpa: '' }],
     skills: ''
   });
+
+  const sections = [
+    {
+      id: 'builder',
+      title: 'Resume Builder',
+      icon: FileText,
+      color: 'from-blue-500 to-purple-600',
+      description: 'Create and edit your resume'
+    },
+    {
+      id: 'templates',
+      title: 'Templates',
+      icon: Award,
+      color: 'from-green-500 to-emerald-600',
+      description: 'Choose from professional templates'
+    },
+    {
+      id: 'ai-interview',
+      title: 'AI Interview',
+      icon: TrendingUp,
+      color: 'from-purple-500 to-pink-600',
+      description: 'Practice with AI-powered interviews'
+    }
+  ];
 
   // Initialize dark mode from localStorage or system preference
   useEffect(() => {
@@ -84,6 +110,17 @@ const ResponsiveResumeBuilder = () => {
     }));
   };
 
+  // Navigation functions
+  const handleSectionChange = (sectionId) => {
+    setActiveSection(sectionId);
+    setMobileMenuOpen(false); // Close mobile menu when section is selected
+  };
+
+  // Close mobile menu when clicking outside
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
+
   // Download resume (placeholder function)
   const downloadResume = () => {
     // Placeholder for download functionality
@@ -108,28 +145,112 @@ const ResponsiveResumeBuilder = () => {
               </h1>
             </div>
 
-            {/* Dark Mode Toggle */}
-            <button
-              onClick={toggleDarkMode}
-              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
-              aria-label="Toggle dark mode"
-            >
-              {darkMode ? (
-                <Sun className="w-5 h-5 text-yellow-500" />
-              ) : (
-                <Moon className="w-5 h-5 text-gray-600" />
-              )}
-            </button>
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-1">
+              {sections.map((section) => (
+                <button
+                  key={section.id}
+                  onClick={() => handleSectionChange(section.id)}
+                  className={`flex items-center space-x-2 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                    activeSection === section.id
+                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  <section.icon className="w-4 h-4" />
+                  <span>{section.title}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Mobile Menu Button & Dark Mode Toggle */}
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={toggleDarkMode}
+                className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
+                aria-label="Toggle dark mode"
+              >
+                {darkMode ? (
+                  <Sun className="w-5 h-5 text-yellow-500" />
+                ) : (
+                  <Moon className="w-5 h-5 text-gray-600" />
+                )}
+              </button>
+              
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="md:hidden p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
+                aria-label="Toggle mobile menu"
+              >
+                {mobileMenuOpen ? (
+                  <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                ) : (
+                  <Menu className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div 
+          className="fixed inset-0 z-40 bg-black bg-opacity-50 md:hidden"
+          onClick={closeMobileMenu}
+        />
+      )}
+
+      {/* Mobile Menu Panel */}
+      <div className={`fixed top-0 right-0 h-full w-80 bg-white dark:bg-gray-800 shadow-xl z-50 transform transition-transform duration-300 ease-in-out md:hidden ${
+        mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+      }`}>
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white">Navigation</h2>
+            <button
+              onClick={closeMobileMenu}
+              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
+            >
+              <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            </button>
+          </div>
           
-          {/* Form Section */}
-          <div className="space-y-6">
+          <nav className="space-y-2">
+            {sections.map((section) => (
+              <button
+                key={section.id}
+                onClick={() => handleSectionChange(section.id)}
+                className={`w-full flex items-center space-x-4 px-4 py-4 text-left rounded-xl transition-all duration-200 ${
+                  activeSection === section.id
+                    ? 'bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 text-blue-600 dark:text-blue-400 shadow-sm'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                }`}
+              >
+                <div className={`p-2 rounded-lg bg-gradient-to-r ${section.color}`}>
+                  <section.icon className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <div className="font-medium">{section.title}</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">{section.description}</div>
+                </div>
+              </button>
+            ))}
+          </nav>
+        </div>
+      </div>
+
+      {/* Main Content - Single Section Display */}
+      <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        {/* Resume Builder Section */}
+        {activeSection === 'builder' && (
+          <div className="px-4 sm:px-6 lg:px-8 py-8">
+            <div className="max-w-7xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                {/* Form Section */}
+                <div className="space-y-6">
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
               <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
                 Personal Information
@@ -490,6 +611,78 @@ const ResponsiveResumeBuilder = () => {
             </div>
           </div>
         </div>
+      </div>
+    </div>
+        )}
+
+        {/* Templates Section */}
+        {activeSection === 'templates' && (
+          <div className="px-4 sm:px-6 lg:px-8 py-8">
+            <div className="max-w-7xl mx-auto">
+              <div className="text-center">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-12">
+                  <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <Award className="w-10 h-10 text-white" />
+                  </div>
+                  <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Resume Templates</h2>
+                  <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+                    Choose from our collection of professionally designed resume templates. Each template is ATS-optimized and customizable to match your style.
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+                    {[1, 2, 3, 4, 5, 6].map((template) => (
+                      <div key={template} className="bg-gray-100 dark:bg-gray-700 rounded-lg p-6 hover:shadow-lg transition-shadow duration-200 cursor-pointer">
+                        <div className="h-32 bg-gradient-to-br from-blue-400 to-purple-500 rounded-lg mb-4 flex items-center justify-center">
+                          <FileText className="w-8 h-8 text-white" />
+                        </div>
+                        <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Template {template}</h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Professional design perfect for your industry</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* AI Interview Section */}
+        {activeSection === 'ai-interview' && (
+          <div className="px-4 sm:px-6 lg:px-8 py-8">
+            <div className="max-w-7xl mx-auto">
+              <div className="text-center">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-12">
+                  <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <TrendingUp className="w-10 h-10 text-white" />
+                  </div>
+                  <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">AI Interview Practice</h2>
+                  <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+                    Practice your interview skills with our AI-powered interview simulator. Get personalized feedback and improve your confidence.
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                    <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg p-6">
+                      <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Practice Sessions</h3>
+                      <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                        <li>• Behavioral questions</li>
+                        <li>• Technical interviews</li>
+                        <li>• Industry-specific questions</li>
+                        <li>• Mock video interviews</li>
+                      </ul>
+                    </div>
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg p-6">
+                      <h3 className="font-semibold text-gray-900 dark:text-white mb-4">AI Feedback</h3>
+                      <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                        <li>• Real-time analysis</li>
+                        <li>• Speech pattern insights</li>
+                        <li>• Confidence scoring</li>
+                        <li>• Improvement suggestions</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
