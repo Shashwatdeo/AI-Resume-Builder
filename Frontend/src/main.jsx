@@ -4,6 +4,7 @@ import './index.css'
 import {Provider} from 'react-redux'
 import  store  from './store/store.js'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { registerSW, initPWAInstallPrompt } from './pwaUtils.js'
 import App from './App.jsx'
 import Login from './components/loginComponent/Login.jsx'
 import Register from './components/registerComponent/Register.jsx'
@@ -19,6 +20,7 @@ import AiInterview from './components/AiInterview/AiInterview.jsx'
 import ProfileView from './components/AiInterview/ProfileView.jsx'
 import InterviewPractice from './components/AiInterview/InterviewPractice.jsx'
 import SmartSuggestions from './components/SmartSuggestions.jsx'
+import ResponsiveResumeBuilder from './components/ResponsiveResumeBuilder.jsx'
 
 const router = createBrowserRouter([
   {
@@ -62,6 +64,10 @@ const router = createBrowserRouter([
         element:<SmartSuggestions/>
       },
       {
+        path: '/responsive-builder',
+        element: <ResponsiveResumeBuilder/>
+      },
+      {
         path: '/login',
         element: <Protected authentication={false}><Login/></Protected>
       },
@@ -80,6 +86,10 @@ const router = createBrowserRouter([
     ]
   }
 ])
+
+// Initialize PWA features
+registerSW();
+initPWAInstallPrompt();
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
