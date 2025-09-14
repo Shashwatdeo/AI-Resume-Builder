@@ -92,10 +92,6 @@ function App() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
-      <header className="sticky top-0 z-50">
-        <Header />
-      </header>
-      
       <main className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
         <Outlet/>
       </main>

@@ -4,6 +4,7 @@ import { Ellipsis, Download, Trash2, Plus, FileText, TrendingUp, Clock, Star, Us
 import resumeService from '../../backend/resume'
 import { Toaster, toast } from 'sonner'
 import { Link } from 'react-router-dom'
+import Header from '../Header/Header'
 import {
   Card,
   CardContent,
@@ -114,7 +115,9 @@ function Dashboard() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-6 transition-colors duration-300">
+    <>
+      <Header />
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-6 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Toaster richColors expand={true} />
         
@@ -351,7 +354,8 @@ function Dashboard() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+      </div>
+    </>
   )
 }
 
