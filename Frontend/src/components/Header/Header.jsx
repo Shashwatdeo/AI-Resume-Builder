@@ -1,14 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from '../ui/button'
 import  Logo  from './Logo'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import LogoutBtn from './LogoutBtn.jsx'
+import { Menu, X } from 'lucide-react'
 
 function Header() {
-
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const authStatus = useSelector((state) => state.auth.status);
   const userData = useSelector((state) => state.auth.userData);
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
 
   return (
     <header>
@@ -18,33 +23,7 @@ function Header() {
            {
             authStatus?(
               <>
-              <div className='flex gap-6 items-center'>
-                <Button asChild variant="ghost" className="cursor-pointer text-lg font-semibold px-6 py-3 hover:bg-blue-100 hover:text-blue-700 transition-all duration-300 rounded-xl">
-                  <Link to="/dashboard" className="flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
-                    </svg>
-                    Dashboard
-                  </Link>
-                </Button>
-                <Button asChild variant="ghost" className="cursor-pointer text-lg font-semibold px-6 py-3 hover:bg-purple-100 hover:text-purple-700 transition-all duration-300 rounded-xl">
-                  <Link to="/templates" className="flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                    </svg>
-                    Resume Templates
-                  </Link>
-                </Button>
-                <Button asChild variant="ghost" className="cursor-pointer text-lg font-semibold px-6 py-3 hover:bg-green-100 hover:text-green-700 transition-all duration-300 rounded-xl">
-                  <Link to="/ai-interview" className="flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                    </svg>
-                    AI Interview
-                  </Link>
-                </Button>
-              </div>
+              {/* Welcome Message & User Info */}
               <div className="flex items-center gap-4">
                 {userData && (
                   <div className="flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 rounded-xl border border-blue-200">
@@ -54,7 +33,19 @@ function Header() {
                     <span className="text-gray-700 font-medium">Welcome, {userData.name}!</span>
                   </div>
                 )}
-                <LogoutBtn/>
+                
+                {/* Hamburger Menu Button */}
+                <button
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="p-3 rounded-lg bg-blue-500 hover:bg-blue-600 text-white transition-colors duration-200 shadow-lg"
+                  aria-label="Toggle navigation menu"
+                >
+                  {mobileMenuOpen ? (
+                    <X className="w-6 h-6" />
+                  ) : (
+                    <Menu className="w-6 h-6" />
+                  )}
+                </button>
               </div>
               </>
               
@@ -72,6 +63,94 @@ function Header() {
             )
            }
          </nav>
+
+         {/* Mobile Menu Overlay */}
+         {mobileMenuOpen && authStatus && (
+           <div 
+             className="fixed inset-0 z-40 bg-black bg-opacity-50"
+             onClick={closeMobileMenu}
+           />
+         )}
+
+         {/* Mobile Menu Panel */}
+         {authStatus && (
+           <div className={`fixed top-0 right-0 h-full w-80 max-w-[80vw] bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${
+             mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+           }`}>
+             <div className="p-6">
+               <div className="flex items-center justify-between mb-8">
+                 <h2 className="text-xl font-bold text-gray-900">Navigation</h2>
+                 <button
+                   onClick={closeMobileMenu}
+                   className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
+                 >
+                   <X className="w-5 h-5 text-gray-600" />
+                 </button>
+               </div>
+               
+               <nav className="space-y-3">
+                 {/* Dashboard */}
+                 <Link
+                   to="/dashboard"
+                   onClick={closeMobileMenu}
+                   className="w-full flex items-center space-x-4 px-4 py-4 text-left rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200"
+                 >
+                   <div className="p-3 rounded-lg bg-blue-500 shadow-sm">
+                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
+                     </svg>
+                   </div>
+                   <div className="flex-1">
+                     <div className="font-semibold text-base">Dashboard</div>
+                     <div className="text-sm text-gray-500 mt-1">Build your resume</div>
+                   </div>
+                 </Link>
+
+                 {/* Templates */}
+                 <Link
+                   to="/templates"
+                   onClick={closeMobileMenu}
+                   className="w-full flex items-center space-x-4 px-4 py-4 text-left rounded-xl text-gray-700 hover:bg-purple-50 hover:text-purple-700 transition-all duration-200"
+                 >
+                   <div className="p-3 rounded-lg bg-purple-500 shadow-sm">
+                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                     </svg>
+                   </div>
+                   <div className="flex-1">
+                     <div className="font-semibold text-base">Resume Templates</div>
+                     <div className="text-sm text-gray-500 mt-1">Choose from templates</div>
+                   </div>
+                 </Link>
+
+                 {/* AI Interview */}
+                 <Link
+                   to="/ai-interview"
+                   onClick={closeMobileMenu}
+                   className="w-full flex items-center space-x-4 px-4 py-4 text-left rounded-xl text-gray-700 hover:bg-green-50 hover:text-green-700 transition-all duration-200"
+                 >
+                   <div className="p-3 rounded-lg bg-green-500 shadow-sm">
+                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                     </svg>
+                   </div>
+                   <div className="flex-1">
+                     <div className="font-semibold text-base">AI Interview</div>
+                     <div className="text-sm text-gray-500 mt-1">Practice interviews</div>
+                   </div>
+                 </Link>
+               </nav>
+               
+               {/* Logout Section */}
+               <div className="pt-4 mt-6 border-t border-gray-200">
+                 <div className="px-4">
+                   <LogoutBtn />
+                 </div>
+               </div>
+             </div>
+           </div>
+         )}
     </header>
     
   )
