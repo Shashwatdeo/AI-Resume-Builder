@@ -72,35 +72,66 @@ function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-cover bg-center" 
-         style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2400&q=80)' }}>
+    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
+      {/* Enhanced Background Elements */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50"></div>
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-32 -right-32 w-64 h-64 bg-gradient-to-br from-blue-400/30 to-purple-400/30 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-gradient-to-tr from-indigo-400/25 to-pink-400/25 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/4 right-1/4 w-48 h-48 bg-gradient-to-r from-cyan-400/15 to-blue-400/15 rounded-full blur-2xl animate-pulse" style={{animationDelay: '4s'}}></div>
+      </div>
+      
+      {/* Subtle Pattern Overlay */}
+      <div className="absolute inset-0 opacity-[0.03]" style={{
+        backgroundImage: `radial-gradient(circle at 2px 2px, rgba(59, 130, 246, 0.4) 1px, transparent 0)`,
+        backgroundSize: '40px 40px'
+      }}></div> 
       
       <div className="w-full max-w-2xl mx-4">
         <div className="backdrop-blur-lg bg-white/30 rounded-2xl shadow-2xl overflow-hidden border border-white/20">
           <div className="flex flex-col md:flex-row">
             
-            {/* Left Section */}
-            <div className="hidden md:block md:w-1/2 bg-gradient-to-br from-blue-600/90 to-purple-600/90 p-12 text-white">
+            {/* Left Section - Welcome Panel */}
+            <div className="hidden md:block md:w-1/2 bg-gradient-to-br from-purple-600/90 to-pink-600/90 p-12 text-white">
               <div className="h-full flex flex-col justify-center">
-                <h2 className="text-4xl font-bold mb-4">Welcome User 😊</h2>
+                <h2 className="text-4xl font-bold mb-4">Join Us Today</h2>
                 <p className="text-lg opacity-90 mb-8">
-                  Build your professional resume in minutes and unlock new career opportunities.
+                  Create your account and start building professional resumes that get you hired.
                 </p>
-                <div className="flex items-center space-x-2">
-                  <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                    <span className="text-sm">Professional templates</span>
                   </div>
-                  <span className="text-sm">Secure authentication</span>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                    <span className="text-sm">ATS optimization</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                    <span className="text-sm">AI-powered suggestions</span>
+                  </div>
                 </div>
               </div>
             </div>
             
-            {/* Right Section - Form */}
-            <div className="w-full md:w-1/2 bg-white p-12">
+            {/* Right Section - Registration Form */}
+            <div className="w-full md:w-1/2 p-8 md:p-12">
               <div className="text-center mb-8">
-                <h3 className="text-3xl font-bold text-gray-800">Sign Up</h3>
+                <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 via-purple-800 to-pink-800 bg-clip-text text-transparent mb-2">Create Account</h2>
+                <p className="text-gray-700">Join us to build your professional resume</p>
               </div>
 
               {error && (

@@ -115,7 +115,7 @@ function Dashboard() {
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-6">
+      <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Toaster richColors expand={true} />
         
@@ -139,7 +139,7 @@ function Dashboard() {
           {/* Stats Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {stats.map((stat, index) => (
-              <Card key={index} className={`${stat.bgColor} border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1`}>
+              <Card key={index} className={`${stat.bgColor} border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 backdrop-blur-sm bg-white/80`}>
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
@@ -161,7 +161,7 @@ function Dashboard() {
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Quick Actions</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Link to="/templates" className="group">
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer bg-gradient-to-r from-blue-50 to-indigo-100">
+              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer bg-gradient-to-r from-blue-50 to-indigo-100 backdrop-blur-sm bg-white/90">
                 <CardContent className="p-6">
                   <div className="flex items-center space-x-4">
                     <div className="p-3 bg-blue-600 rounded-xl group-hover:scale-110 transition-transform duration-300">
@@ -177,7 +177,7 @@ function Dashboard() {
             </Link>
 
             <Link to="/ats" className="group">
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer bg-gradient-to-r from-green-50 to-emerald-100">
+              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer bg-gradient-to-r from-green-50 to-emerald-100 backdrop-blur-sm bg-white/90">
                 <CardContent className="p-6">
                   <div className="flex items-center space-x-4">
                     <div className="p-3 bg-green-600 rounded-xl group-hover:scale-110 transition-transform duration-300">
@@ -193,7 +193,7 @@ function Dashboard() {
             </Link>
 
             <Link to="/ai-interview" className="group">
-              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer bg-gradient-to-r from-purple-50 to-pink-100">
+              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer bg-gradient-to-r from-purple-50 to-pink-100 backdrop-blur-sm bg-white/90">
                 <CardContent className="p-6">
                   <div className="flex items-center space-x-4">
                     <div className="p-3 bg-purple-600 rounded-xl group-hover:scale-110 transition-transform duration-300">
@@ -235,7 +235,7 @@ function Dashboard() {
               ))}
             </div>
           ) : resumes.length === 0 ? (
-            <Card className="border-0 shadow-lg bg-gradient-to-r from-blue-50 to-indigo-100">
+            <Card className="border-0 shadow-lg bg-gradient-to-r from-blue-50 to-indigo-100 backdrop-blur-sm bg-white/90">
               <CardContent className="p-12 text-center">
                 <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
                   <FileText className="h-10 w-10 text-white" />
@@ -257,7 +257,7 @@ function Dashboard() {
               {resumes.map((resume, index) => (
                 <Card 
                   key={resume._id}
-                  className={`group relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-500 cursor-pointer h-full flex flex-col transform hover:-translate-y-2 hover:scale-105`}
+                  className={`group relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-500 cursor-pointer h-full flex flex-col transform hover:-translate-y-2 hover:scale-105 backdrop-blur-sm bg-white/95`}
                   onClick={() => navigate(`/resume/${resume._id}`)}
                   style={{ animationDelay: `${index * 100}ms` }}
                 >

@@ -16,8 +16,8 @@ function Header() {
   };
 
   return (
-    <header>
-        <nav className='w-full flex justify-between items-center p-3 sm:p-6 shadow-lg bg-gradient-to-r from-white via-blue-50 to-indigo-50 border-b border-blue-100'>
+    <header className="relative z-50">
+        <nav className='w-full flex justify-between items-center p-3 sm:p-6 shadow-lg bg-gradient-to-r from-white via-blue-50 to-indigo-50 border-b border-blue-100 relative z-50'>
           <Logo size="lg" />
       
            {
@@ -44,7 +44,7 @@ function Header() {
                 {/* Hamburger Menu Button */}
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  className="p-2 sm:p-3 rounded-lg bg-blue-500 hover:bg-blue-600 text-white transition-colors duration-200 shadow-lg flex-shrink-0"
+                  className="p-2 sm:p-3 rounded-lg bg-blue-500 hover:bg-blue-600 text-white transition-colors duration-200 shadow-lg flex-shrink-0 cursor-pointer"
                   aria-label="Toggle navigation menu"
                 >
                   {mobileMenuOpen ? (
