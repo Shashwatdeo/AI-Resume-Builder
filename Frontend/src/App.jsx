@@ -64,24 +64,24 @@ function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center transition-colors duration-300">
         <div className="text-center space-y-6">
           <div className="animate-pulse">
-            <h1 className="text-4xl font-bold text-gray-800 mb-2">AI Resume Builder</h1>
-            <p className="text-gray-600">Loading your workspace...</p>
+            <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-2">AI Resume Builder</h1>
+            <p className="text-gray-600 dark:text-gray-300">Loading your workspace...</p>
           </div>
           
           <div className="w-64 mx-auto">
-            <div className="bg-gray-200 rounded-full h-2 mb-4">
+            <div className="bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-4">
               <div 
-                className="bg-blue-600 h-2 rounded-full transition-all duration-500 ease-out"
+                className="bg-blue-600 dark:bg-blue-500 h-2 rounded-full transition-all duration-500 ease-out"
                 style={{ width: `${loadingProgress}%` }}
               ></div>
             </div>
-            <p className="text-sm text-gray-500">{loadingMessage}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{loadingMessage}</p>
           </div>
           
-          <div className="text-xs text-gray-400 mt-8">
+          <div className="text-xs text-gray-400 dark:text-gray-500 mt-8">
             <p>If this takes longer than 30 seconds, please refresh the page</p>
             <p className="mt-2">First-time visits may take 20-30 seconds due to server startup</p>
           </div>
@@ -91,13 +91,15 @@ function App() {
   }
 
   return (
-    <>
+    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
       <header className="sticky top-0 z-50">
         <Header />
       </header>
       
-      <Outlet/>
-    </>
+      <main className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+        <Outlet/>
+      </main>
+    </div>
   )
 }
 

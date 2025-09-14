@@ -5,6 +5,7 @@ import {Provider} from 'react-redux'
 import  store  from './store/store.js'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { registerSW, initPWAInstallPrompt } from './pwaUtils.js'
+import { ThemeProvider } from './contexts/ThemeContext.jsx'
 import App from './App.jsx'
 import Login from './components/loginComponent/Login.jsx'
 import Register from './components/registerComponent/Register.jsx'
@@ -94,8 +95,10 @@ initPWAInstallPrompt();
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-     <Provider store={store}>
-      <RouterProvider router={router}/>
-     </Provider>
+    <ThemeProvider>
+      <Provider store={store}>
+        <RouterProvider router={router}/>
+      </Provider>
+    </ThemeProvider>
   </StrictMode>,
 )
