@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Moon, Sun, Download, User, Mail, Phone, Calendar, GraduationCap, Briefcase, FileText, Award, TrendingUp, Menu, X } from 'lucide-react';
+import { User, FileText, Brain, Menu, X, Sun, Moon, Download, LogOut, Mail, Phone, Calendar, GraduationCap, Briefcase, Award, TrendingUp } from 'lucide-react';
 
 const ResponsiveResumeBuilder = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -128,12 +128,12 @@ const ResponsiveResumeBuilder = () => {
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${
+    <div className={`min-h-screen w-full max-w-full transition-colors duration-300 overflow-x-hidden ${
       darkMode ? 'dark bg-gray-900' : 'bg-gray-50'
     }`}>
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <header className="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 w-full">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo/Title */}
             <div className="flex items-center space-x-3">
@@ -145,48 +145,18 @@ const ResponsiveResumeBuilder = () => {
               </h1>
             </div>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-1">
-              {sections.map((section) => (
-                <button
-                  key={section.id}
-                  onClick={() => handleSectionChange(section.id)}
-                  className={`flex items-center space-x-2 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                    activeSection === section.id
-                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
-                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
-                  }`}
-                >
-                  <section.icon className="w-4 h-4" />
-                  <span>{section.title}</span>
-                </button>
-              ))}
-            </div>
-
-            {/* Mobile Menu Button & Dark Mode Toggle */}
+            {/* Hamburger Menu Button - ONLY NAVIGATION */}
             <div className="flex items-center space-x-2">
               <button
-                onClick={toggleDarkMode}
-                className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
-                aria-label="Toggle dark mode"
-              >
-                {darkMode ? (
-                  <Sun className="w-5 h-5 text-yellow-500" />
-                ) : (
-                  <Moon className="w-5 h-5 text-gray-600" />
-                )}
-              </button>
-              
-              {/* Mobile Menu Button */}
-              <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
-                aria-label="Toggle mobile menu"
+                className="p-3 rounded-lg bg-blue-500 hover:bg-blue-600 text-white transition-colors duration-200 shadow-lg"
+                aria-label="Toggle navigation menu"
+                style={{ minWidth: '48px', minHeight: '48px' }}
               >
                 {mobileMenuOpen ? (
-                  <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                  <X className="w-6 h-6" />
                 ) : (
-                  <Menu className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                  <Menu className="w-6 h-6" />
                 )}
               </button>
             </div>
@@ -203,7 +173,7 @@ const ResponsiveResumeBuilder = () => {
       )}
 
       {/* Mobile Menu Panel */}
-      <div className={`fixed top-0 right-0 h-full w-80 bg-white dark:bg-gray-800 shadow-xl z-50 transform transition-transform duration-300 ease-in-out md:hidden ${
+      <div className={`fixed top-0 right-0 h-full w-80 max-w-[80vw] bg-white dark:bg-gray-800 shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${
         mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
         <div className="p-6">
@@ -217,41 +187,87 @@ const ResponsiveResumeBuilder = () => {
             </button>
           </div>
           
-          <nav className="space-y-2">
+          <nav className="space-y-3">
             {sections.map((section) => (
               <button
                 key={section.id}
                 onClick={() => handleSectionChange(section.id)}
                 className={`w-full flex items-center space-x-4 px-4 py-4 text-left rounded-xl transition-all duration-200 ${
                   activeSection === section.id
-                    ? 'bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 text-blue-600 dark:text-blue-400 shadow-sm'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                    ? 'bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 text-blue-600 dark:text-blue-400 shadow-sm border-2 border-blue-200 dark:border-blue-700'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border-2 border-transparent'
                 }`}
               >
-                <div className={`p-2 rounded-lg bg-gradient-to-r ${section.color}`}>
-                  <section.icon className="w-5 h-5 text-white" />
+                <div className={`p-3 rounded-lg bg-gradient-to-r ${section.color} shadow-sm`}>
+                  <section.icon className="w-6 h-6 text-white" />
                 </div>
-                <div>
-                  <div className="font-medium">{section.title}</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">{section.description}</div>
+                <div className="flex-1">
+                  <div className="font-semibold text-base">{section.title}</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">{section.description}</div>
                 </div>
+                {activeSection === section.id && (
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                )}
               </button>
             ))}
+            
+            {/* Mobile Menu Actions */}
+            <div className="pt-4 mt-6 border-t border-gray-200 dark:border-gray-600 space-y-3">
+              {/* Dark Mode Toggle - Mobile */}
+              <button
+                onClick={toggleDarkMode}
+                className="w-full flex items-center space-x-4 px-4 py-3 text-left rounded-xl text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200"
+              >
+                <div className="p-2 rounded-lg bg-gray-500">
+                  {darkMode ? (
+                    <Sun className="w-5 h-5 text-white" />
+                  ) : (
+                    <Moon className="w-5 h-5 text-white" />
+                  )}
+                </div>
+                <div className="flex-1">
+                  <div className="font-medium">{darkMode ? 'Light Mode' : 'Dark Mode'}</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">Toggle theme</div>
+                </div>
+              </button>
+              
+              {/* Logout Button - Mobile */}
+              <button
+                onClick={() => alert('Logout functionality')}
+                className="w-full flex items-center space-x-4 px-4 py-3 text-left rounded-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200"
+              >
+                <div className="p-2 rounded-lg bg-red-500">
+                  <LogOut className="w-5 h-5 text-white" />
+                </div>
+                <div className="flex-1">
+                  <div className="font-medium">Logout</div>
+                  <div className="text-sm text-red-400 dark:text-red-300">Sign out of account</div>
+                </div>
+              </button>
+            </div>
           </nav>
+          
+          {/* Current Section Indicator */}
+          <div className="mt-8 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <div className="text-sm text-gray-600 dark:text-gray-400">Currently viewing:</div>
+            <div className="font-medium text-gray-900 dark:text-white">
+              {sections.find(s => s.id === activeSection)?.title}
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Main Content - Single Section Display */}
-      <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <main className="min-h-screen bg-gray-50 dark:bg-gray-900 overflow-x-hidden w-full max-w-full">
         {/* Resume Builder Section */}
         {activeSection === 'builder' && (
-          <div className="px-4 sm:px-6 lg:px-8 py-8">
+          <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
             <div className="max-w-7xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 
                 {/* Form Section */}
-                <div className="space-y-6">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                <div className="space-y-6 w-full max-w-full">
+                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 w-full max-w-full overflow-hidden">
               <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
                 Personal Information
               </h2>
@@ -617,7 +633,7 @@ const ResponsiveResumeBuilder = () => {
 
         {/* Templates Section */}
         {activeSection === 'templates' && (
-          <div className="px-4 sm:px-6 lg:px-8 py-8">
+          <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
             <div className="max-w-7xl mx-auto">
               <div className="text-center">
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-12">
@@ -647,7 +663,7 @@ const ResponsiveResumeBuilder = () => {
 
         {/* AI Interview Section */}
         {activeSection === 'ai-interview' && (
-          <div className="px-4 sm:px-6 lg:px-8 py-8">
+          <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
             <div className="max-w-7xl mx-auto">
               <div className="text-center">
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-12">
