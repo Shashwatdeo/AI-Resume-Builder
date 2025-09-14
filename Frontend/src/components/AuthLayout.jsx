@@ -12,8 +12,8 @@ export default function Protected({children, authentication = true}) {
     useEffect(() => {
         // For routes that don't require authentication (like login, register, forgot-password)
         if (!authentication) {
-            // If user is already logged in and trying to access auth pages or landing page, redirect to dashboard
-            if (authStatus && (location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/forgot-password' || location.pathname === '/')) {
+            // If user is already logged in and trying to access auth pages, redirect to dashboard
+            if (authStatus && (location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/forgot-password')) {
                 navigate("/dashboard")
             } else {
                 // Allow access to auth pages for non-authenticated users

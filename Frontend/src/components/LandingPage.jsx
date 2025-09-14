@@ -91,6 +91,24 @@ function LandingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+      {/* Navigation Header */}
+      <nav className="relative z-50 w-full flex justify-between items-center p-6 bg-white/80 backdrop-blur-sm border-b border-blue-100">
+        <div className="flex items-center">
+          <div className="text-3xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+            ResumeIt
+          </div>
+          <span className="ml-2 text-2xl">✨</span>
+        </div>
+        <div className="flex gap-4">
+          <Button asChild variant="outline" className="px-6 py-3 text-lg font-semibold hover:bg-blue-50 hover:border-blue-300 transition-all duration-300 rounded-xl">
+            <Link to="/register">Sign Up</Link>
+          </Button>
+          <Button asChild variant="outline" className="px-6 py-3 text-lg font-semibold hover:bg-blue-50 hover:border-blue-300 transition-all duration-300 rounded-xl">
+            <Link to="/login">Sign In</Link>
+          </Button>
+        </div>
+      </nav>
+
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         {/* Animated Background */}

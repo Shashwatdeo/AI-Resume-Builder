@@ -32,9 +32,9 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const userData = await authService.login(formData);
-      if (userData) {
-        dispatch(login(userData));
+      const response = await authService.login(formData);
+      if (response && response.data && response.data.user) {
+        dispatch(login({ userData: response.data.user }));
         toast.success("Login successful! Welcome back.");
         navigate('/dashboard');
       } else {
