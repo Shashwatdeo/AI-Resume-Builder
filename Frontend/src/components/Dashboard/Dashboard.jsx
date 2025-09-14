@@ -4,7 +4,6 @@ import { Ellipsis, Download, Trash2, Plus, FileText, TrendingUp, Clock, Star, Us
 import resumeService from '../../backend/resume'
 import { Toaster, toast } from 'sonner'
 import { Link } from 'react-router-dom'
-import Header from '../Header/Header'
 import {
   Card,
   CardContent,
@@ -116,8 +115,7 @@ function Dashboard() {
 
   return (
     <>
-      <Header />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-6 transition-colors duration-300">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Toaster richColors expand={true} />
         
@@ -125,10 +123,10 @@ function Dashboard() {
         <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-8">
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 dark:from-gray-100 dark:via-blue-300 dark:to-purple-300 bg-clip-text text-transparent">
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
                 Welcome Back! 👋
               </h1>
-              <p className="text-xl text-gray-600 dark:text-gray-300 mt-2">Manage your professional resumes and track your progress</p>
+              <p className="text-xl text-gray-600 mt-2">Manage your professional resumes and track your progress</p>
             </div>
             <Button asChild className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg">
               <Link to="/templates" className="flex items-center gap-2 text-lg">

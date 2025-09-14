@@ -4,14 +4,12 @@ import  Logo  from './Logo'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import LogoutBtn from './LogoutBtn.jsx'
-import { Menu, X, Sun, Moon } from 'lucide-react'
-import { useTheme } from '../../contexts/ThemeContext'
+import { Menu, X } from 'lucide-react'
 
 function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const authStatus = useSelector((state) => state.auth.status);
   const userData = useSelector((state) => state.auth.userData);
-  const { darkMode, toggleDarkMode } = useTheme();
 
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
@@ -19,7 +17,7 @@ function Header() {
 
   return (
     <header>
-        <nav className='w-full flex justify-between items-center p-3 sm:p-6 shadow-lg bg-gradient-to-r from-white via-blue-50 to-indigo-50 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 border-b border-blue-100 dark:border-gray-600 transition-colors duration-300'>
+        <nav className='w-full flex justify-between items-center p-3 sm:p-6 shadow-lg bg-gradient-to-r from-white via-blue-50 to-indigo-50 border-b border-blue-100'>
           <Logo size="lg" />
       
            {
@@ -28,11 +26,11 @@ function Header() {
               {/* Welcome Message & User Info - Responsive */}
               <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
                 {userData && (
-                  <div className="hidden sm:flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-xl border border-blue-200 dark:border-blue-700">
+                  <div className="hidden sm:flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 rounded-xl border border-blue-200">
                     <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
                       {userData.name?.charAt(0).toUpperCase()}
                     </div>
-                    <span className="text-gray-700 dark:text-gray-200 font-medium">Welcome, {userData.name}!</span>
+                    <span className="text-gray-700 font-medium">Welcome, {userData.name}!</span>
                   </div>
                 )}
                 
@@ -76,17 +74,17 @@ function Header() {
 
          {/* Mobile Menu Panel */}
          {authStatus && (
-           <div className={`fixed top-0 right-0 h-full w-80 max-w-[80vw] bg-white dark:bg-gray-800 shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${
+           <div className={`fixed top-0 right-0 h-full w-80 max-w-[80vw] bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${
              mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
            }`}>
              <div className="p-6">
                <div className="flex items-center justify-between mb-8">
-                 <h2 className="text-xl font-bold text-gray-900 dark:text-white">Navigation</h2>
+                 <h2 className="text-xl font-bold text-gray-900">Navigation</h2>
                  <button
                    onClick={closeMobileMenu}
-                   className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
+                   className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
                  >
-                   <X className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                   <X className="w-5 h-5 text-gray-600" />
                  </button>
                </div>
                
@@ -95,7 +93,7 @@ function Header() {
                  <Link
                    to="/dashboard"
                    onClick={closeMobileMenu}
-                   className="w-full flex items-center space-x-4 px-4 py-4 text-left rounded-xl text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-700 dark:hover:text-blue-300 transition-all duration-200"
+                   className="w-full flex items-center space-x-4 px-4 py-4 text-left rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-200"
                  >
                    <div className="p-3 rounded-lg bg-blue-500 shadow-sm">
                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,7 +103,7 @@ function Header() {
                    </div>
                    <div className="flex-1">
                      <div className="font-semibold text-base">Dashboard</div>
-                     <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">Build your resume</div>
+                     <div className="text-sm text-gray-500 mt-1">Build your resume</div>
                    </div>
                  </Link>
 
@@ -113,7 +111,7 @@ function Header() {
                  <Link
                    to="/templates"
                    onClick={closeMobileMenu}
-                   className="w-full flex items-center space-x-4 px-4 py-4 text-left rounded-xl text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-700 dark:hover:text-purple-300 transition-all duration-200"
+                   className="w-full flex items-center space-x-4 px-4 py-4 text-left rounded-xl text-gray-700 hover:bg-purple-50 hover:text-purple-700 transition-all duration-200"
                  >
                    <div className="p-3 rounded-lg bg-purple-500 shadow-sm">
                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,7 +120,7 @@ function Header() {
                    </div>
                    <div className="flex-1">
                      <div className="font-semibold text-base">Resume Templates</div>
-                     <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">Choose from templates</div>
+                     <div className="text-sm text-gray-500 mt-1">Choose from templates</div>
                    </div>
                  </Link>
 
@@ -130,7 +128,7 @@ function Header() {
                  <Link
                    to="/ai-interview"
                    onClick={closeMobileMenu}
-                   className="w-full flex items-center space-x-4 px-4 py-4 text-left rounded-xl text-gray-700 dark:text-gray-200 hover:bg-green-50 dark:hover:bg-green-900/20 hover:text-green-700 dark:hover:text-green-300 transition-all duration-200"
+                   className="w-full flex items-center space-x-4 px-4 py-4 text-left rounded-xl text-gray-700 hover:bg-green-50 hover:text-green-700 transition-all duration-200"
                  >
                    <div className="p-3 rounded-lg bg-green-500 shadow-sm">
                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -139,31 +137,14 @@ function Header() {
                    </div>
                    <div className="flex-1">
                      <div className="font-semibold text-base">AI Interview</div>
-                     <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">Practice interviews</div>
+                     <div className="text-sm text-gray-500 mt-1">Practice interviews</div>
                    </div>
                  </Link>
                  
-                 {/* Dark Mode Toggle */}
-                 <button
-                   onClick={toggleDarkMode}
-                   className="w-full flex items-center space-x-4 px-4 py-4 text-left rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200"
-                 >
-                   <div className="p-3 rounded-lg bg-gray-500 shadow-sm">
-                     {darkMode ? (
-                       <Sun className="w-6 h-6 text-white" />
-                     ) : (
-                       <Moon className="w-6 h-6 text-white" />
-                     )}
-                   </div>
-                   <div className="flex-1">
-                     <div className="font-semibold text-base">{darkMode ? 'Light Mode' : 'Dark Mode'}</div>
-                     <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">Toggle theme</div>
-                   </div>
-                 </button>
                </nav>
                
                {/* Logout Section */}
-               <div className="pt-4 mt-6 border-t border-gray-200 dark:border-gray-600">
+               <div className="pt-4 mt-6 border-t border-gray-200">
                  <div className="px-4">
                    <LogoutBtn />
                  </div>

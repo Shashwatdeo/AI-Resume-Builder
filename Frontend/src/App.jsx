@@ -1,8 +1,8 @@
 import { useState,useEffect } from 'react'
 import Header from './components/Header/Header'
 import { Button } from './components/ui/button'
-import { Link, Outlet } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { Link, Outlet, useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { login, logout } from './store/authSlice'
 import authService from './backend/auth'
 
@@ -11,6 +11,12 @@ function App() {
   const [loadingProgress, setLoadingProgress] = useState(0)
   const [loadingMessage, setLoadingMessage] = useState('Initializing...')
   const dispatch = useDispatch()
+  const location = useLocation()
+  const authStatus = useSelector((state) => state.auth.status)
+  
+  // Pages where Header should not be shown
+  const noHeaderPages = ['/login', '/register', '/forgot-password', '/reset-password']
+  const shouldShowHeader = authStatus && !noHeaderPages.some(page => location.pathname.startsWith(page))
 
   useEffect(() => {
     const loadingSteps = [
@@ -64,24 +70,24 @@ function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center transition-colors duration-300">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
         <div className="text-center space-y-6">
           <div className="animate-pulse">
-            <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-2">AI Resume Builder</h1>
-            <p className="text-gray-600 dark:text-gray-300">Loading your workspace...</p>
+            <h1 className="text-4xl font-bold text-gray-800 mb-2">AI Resume Builder</h1>
+            <p className="text-gray-600">Loading your workspace...</p>
           </div>
           
           <div className="w-64 mx-auto">
-            <div className="bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-4">
+            <div className="bg-gray-200 rounded-full h-2 mb-4">
               <div 
-                className="bg-blue-600 dark:bg-blue-500 h-2 rounded-full transition-all duration-500 ease-out"
+                className="bg-blue-600 h-2 rounded-full transition-all duration-500 ease-out"
                 style={{ width: `${loadingProgress}%` }}
               ></div>
             </div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">{loadingMessage}</p>
+            <p className="text-sm text-gray-500">{loadingMessage}</p>
           </div>
           
-          <div className="text-xs text-gray-400 dark:text-gray-500 mt-8">
+          <div className="text-xs text-gray-400 mt-8">
             <p>If this takes longer than 30 seconds, please refresh the page</p>
             <p className="mt-2">First-time visits may take 20-30 seconds due to server startup</p>
           </div>
@@ -91,8 +97,22 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
-      <main className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-indigo-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-cyan-400/10 to-blue-400/10 rounded-full blur-2xl animate-pulse" style={{animationDelay: '4s'}}></div>
+      </div>
+      
+      {/* Subtle Grid Pattern */}
+      <div className="absolute inset-0 opacity-[0.02]" style={{
+        backgroundImage: `radial-gradient(circle at 1px 1px, rgba(59, 130, 246, 0.5) 1px, transparent 0)`,
+        backgroundSize: '50px 50px'
+      }}></div>
+      
+      {shouldShowHeader && <Header />}
+      <main className="relative z-10 text-gray-900">
         <Outlet/>
       </main>
     </div>

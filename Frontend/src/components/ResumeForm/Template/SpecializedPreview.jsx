@@ -27,7 +27,7 @@ function SpecializedPreview({ data, id }) {
         <h1 className="text-[25px] font-bold text-blue-800 text-center">{data.personalInfo?.fullName}</h1>
 
         <div className="flex flex-col justify-center items-center">
-          <p className='text-[13px]'>{`${data.personalInfo?.city}, ${data.personalInfo?.state} ${data.personalInfo?.pincode}`}</p>        
+          <p className='text-[13px] text-gray-900 dark:text-gray-100'>{`${data.personalInfo?.city}, ${data.personalInfo?.state} ${data.personalInfo?.pincode}`}</p>        
           <div className="flex flex-wrap justify-center gap-4 text-[12px]">
 
             {/* Phone */}
@@ -36,7 +36,7 @@ function SpecializedPreview({ data, id }) {
                 <Phone className="h-3 w-3" />
                 <a 
                   href={`tel:+91${data.personalInfo?.phone}`}
-                  className=""
+                  className="text-gray-900 dark:text-gray-100"
                 >
                   +91 {data.personalInfo?.phone}
                 </a>
@@ -50,7 +50,7 @@ function SpecializedPreview({ data, id }) {
                 <Mail className="h-3 w-3" />
                 <a 
                   href={`mailto:${data.personalInfo?.email}`}
-                  className="hover:underline"
+                  className="hover:underline text-gray-900 dark:text-gray-100"
                 >
                   {data.personalInfo?.email}
                 </a>
@@ -65,7 +65,7 @@ function SpecializedPreview({ data, id }) {
                   href={data.personalInfo?.linkedInLink} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="hover:underline"
+                  className="hover:underline text-gray-900 dark:text-gray-100"
                 >
                   {data.personalInfo?.linkedIn}
                 </a>
@@ -80,7 +80,7 @@ function SpecializedPreview({ data, id }) {
                   href={data.personalInfo?.githubLink} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="hover:underline"
+                  className="hover:underline text-gray-900 dark:text-gray-100"
                 >
                   {data.personalInfo?.github}
                 </a>
@@ -95,7 +95,7 @@ function SpecializedPreview({ data, id }) {
       {data.personalInfo?.summary && (
         <div className="mb-2">
           <h2 className="text-[17px] font-bold border-b border-gray-800 text-blue-500">Summary</h2>
-          <p className="text-[13px]">{data.personalInfo.summary}</p>
+          <p className="text-[13px] text-gray-900 dark:text-gray-100">{data.personalInfo.summary}</p>
         </div>
       )}
 
@@ -117,8 +117,8 @@ function SpecializedPreview({ data, id }) {
                 <ul>
                   {training.points.filter(p => p.trim()).map((point, i) => (
                     <div key={i} className='flex gap-2'>
-                      <span>-</span>
-                      <li className='list-none'>{point}</li>
+                      <span className="text-gray-900 dark:text-gray-100">-</span>
+                      <li className='list-none text-gray-900 dark:text-gray-100'>{point}</li>
                     </div>
                   ))}
                 </ul>
@@ -143,26 +143,26 @@ function SpecializedPreview({ data, id }) {
                     </span>
                   )}
                 </div>
-                <p className="italic mb-1">{project.summary}</p>
+                <p className="italic mb-1 text-gray-900 dark:text-gray-100">{project.summary}</p>
                 <ul>
                   {project.points.filter(p => p.trim()).map((point, i) => (
                     <div key={i} className='flex gap-2'>
-                      <span>-</span>
-                      <li className='list-none'>{point}</li>
+                      <span className="text-gray-900 dark:text-gray-100">-</span>
+                      <li className='list-none text-gray-900 dark:text-gray-100'>{point}</li>
                     </div>
                   ))}
                 </ul>
                {project.technologies?.length > 0 && (
                   <p className="flex gap-2 text-[13px]">
-                    <span>-</span>
-                    <span className="font-bold ">Technologies: </span>
-                    {project.technologies.join(', ')}
+                    <span className="text-gray-900 dark:text-gray-100">-</span>
+                    <span className="font-bold text-gray-900 dark:text-gray-100">Technologies: </span>
+                    <span className="text-gray-900 dark:text-gray-100">{project.technologies.join(', ')}</span>
                   </p>
                 )}
                 <div className='flex flex-col'>
                 {project.githubLink && (
                  <div>
-                  <span className=" ml-[13px] text-[13px">GitHub Repository Link: </span>
+                  <span className=" ml-[13px] text-[13px] text-gray-900 dark:text-gray-100">GitHub Repository Link: </span>
                   <a href={project.githubLink} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600">
                     {project.githubLink}
                   </a>
@@ -170,7 +170,7 @@ function SpecializedPreview({ data, id }) {
                 )}
                  {project.liveLink && (
                  <div>
-                  <span className=" ml-[13px] text-[13px">Live Project Link: </span>
+                  <span className=" ml-[13px] text-[13px] text-gray-900 dark:text-gray-100">Live Project Link: </span>
                   <a href={project.liveLink} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600">
                     {project.liveLink}
                   </a>
@@ -191,10 +191,10 @@ function SpecializedPreview({ data, id }) {
             {data.certifications.map((cert, index) => (
               <div key={index} className='flex justify-between'>
                 <div>
-                  <h3>• {cert.name} by {cert.issuer}</h3>
-                  <p className='ml-2'>Link — <a href={cert.link} target="_blank" rel="noopener noreferrer">{cert.link}</a></p>
+                  <h3 className="text-gray-900 dark:text-gray-100">• {cert.name} by {cert.issuer}</h3>
+                  <p className='ml-2 text-gray-900 dark:text-gray-100'>Link — <a href={cert.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400">{cert.link}</a></p>
                 </div>
-                <p>
+                <p className="text-gray-600 dark:text-gray-400">
                   {cert.date && formatDate(cert.date)}
                 </p>
               </div>
@@ -211,26 +211,26 @@ function SpecializedPreview({ data, id }) {
           <div className="text-[13px]">
             {data.skills.languages?.length > 0 && (
               <div className='flex gap-[50px]'>
-                <h3 className="font-medium">• Languages: </h3>
-                <p>{data.skills.languages.join(', ')}</p>
+                <h3 className="font-medium text-gray-900 dark:text-gray-100">• Languages: </h3>
+                <p className="text-gray-900 dark:text-gray-100">{data.skills.languages.join(', ')}</p>
               </div>
             )}
             {data.skills.frameworks?.length > 0 && (
               <div className='flex gap-[40px]'>
-                <h3 className="font-medium">• Frameworks: </h3>
-                <p>{data.skills.frameworks.join(', ')}</p>
+                <h3 className="font-medium text-gray-900 dark:text-gray-100">• Frameworks: </h3>
+                <p className="text-gray-900 dark:text-gray-100">{data.skills.frameworks.join(', ')}</p>
               </div>
             )}
             {data.skills.toolsplatforms?.length > 0 && (
               <div className='flex gap-[25px]'>
-                <h3 className="font-medium">• Tools/Platforms:</h3>
-                <p>{data.skills.toolsplatforms.join(', ')}</p>
+                <h3 className="font-medium text-gray-900 dark:text-gray-100">• Tools/Platforms:</h3>
+                <p className="text-gray-900 dark:text-gray-100">{data.skills.toolsplatforms.join(', ')}</p>
               </div>
             )}
             {data.skills.softSkills?.length > 0 && (
               <div className='flex gap-[50px]'>
-                <h3 className="font-medium">• Soft Skills:</h3>
-                <p>{data.skills.softSkills.join(', ')}</p>
+                <h3 className="font-medium text-gray-900 dark:text-gray-100">• Soft Skills:</h3>
+                <p className="text-gray-900 dark:text-gray-100">{data.skills.softSkills.join(', ')}</p>
               </div>
             )}
           </div>
@@ -245,19 +245,19 @@ function SpecializedPreview({ data, id }) {
             {data.education.map((edu, index) => (
               <div key={index}>
                 <div className="flex justify-between">
-                  <h3 className="font-medium">• {edu.institution}</h3>
+                  <h3 className="font-medium text-gray-900 dark:text-gray-100">• {edu.institution}</h3>
                   {(edu.city || edu.state) && (
-                    <p>
+                    <p className="text-gray-600 dark:text-gray-400">
                       {edu.state}{edu.state && edu.state ? ', ' : ''}{edu.country}
                     </p>
                   )}
                 </div>
                 <div className='flex justify-between'>
-                  <p>
+                  <p className="text-gray-900 dark:text-gray-100">
                     {edu.degree}{`${edu.degree?',':''} ${edu.fieldOfStudy} ${edu.fieldOfStudy?',':''}Grade: ${edu.marks}`}
                   </p>
                   {edu.startYear && (
-                    <span className="text-gray-600">
+                    <span className="text-gray-600 dark:text-gray-400">
                       {formatDateRange(
                         new Date(edu.startYear, 0, 1), 
                         edu.endYear ? new Date(edu.endYear, 0, 1) : null,

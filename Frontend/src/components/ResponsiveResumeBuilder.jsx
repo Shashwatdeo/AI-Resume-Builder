@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { User, FileText, Brain, Menu, X, Sun, Moon, Download, LogOut, Mail, Phone, Calendar, GraduationCap, Briefcase, Award, TrendingUp } from 'lucide-react';
+import { User, FileText, Brain, Menu, X, Download, LogOut, Mail, Phone, Calendar, GraduationCap, Briefcase, Award, TrendingUp } from 'lucide-react';
 
 const ResponsiveResumeBuilder = () => {
-  const [darkMode, setDarkMode] = useState(false);
   const [activeSection, setActiveSection] = useState('builder');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -51,19 +50,6 @@ const ResponsiveResumeBuilder = () => {
     }
   }, []);
 
-  // Toggle dark mode
-  const toggleDarkMode = () => {
-    const newDarkMode = !darkMode;
-    setDarkMode(newDarkMode);
-    
-    if (newDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  };
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -128,11 +114,9 @@ const ResponsiveResumeBuilder = () => {
   };
 
   return (
-    <div className={`min-h-screen w-full max-w-full transition-colors duration-300 overflow-x-hidden ${
-      darkMode ? 'dark bg-gray-900' : 'bg-gray-50'
-    }`}>
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-gray-50">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 w-full">
+      <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-200 w-full">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo/Title */}
@@ -140,7 +124,7 @@ const ResponsiveResumeBuilder = () => {
               <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                 <User className="w-5 h-5 text-white" />
               </div>
-              <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-xl font-bold text-gray-900">
                 AI Resume Builder
               </h1>
             </div>
@@ -173,17 +157,17 @@ const ResponsiveResumeBuilder = () => {
       )}
 
       {/* Mobile Menu Panel */}
-      <div className={`fixed top-0 right-0 h-full w-80 max-w-[80vw] bg-white dark:bg-gray-800 shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${
+      <div className={`fixed top-0 right-0 h-full w-80 max-w-[80vw] bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${
         mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
         <div className="p-6">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">Navigation</h2>
+            <h2 className="text-xl font-bold text-gray-900">Navigation</h2>
             <button
               onClick={closeMobileMenu}
-              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
+              className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
             >
-              <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+              <X className="w-5 h-5 text-gray-600" />
             </button>
           </div>
           
@@ -194,8 +178,8 @@ const ResponsiveResumeBuilder = () => {
                 onClick={() => handleSectionChange(section.id)}
                 className={`w-full flex items-center space-x-4 px-4 py-4 text-left rounded-xl transition-all duration-200 ${
                   activeSection === section.id
-                    ? 'bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 text-blue-600 dark:text-blue-400 shadow-sm border-2 border-blue-200 dark:border-blue-700'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border-2 border-transparent'
+                    ? 'bg-gradient-to-r from-blue-50 to-purple-50 text-blue-600 shadow-sm border-2 border-blue-200'
+                    : 'text-gray-700 hover:bg-gray-50 border-2 border-transparent'
                 }`}
               >
                 <div className={`p-3 rounded-lg bg-gradient-to-r ${section.color} shadow-sm`}>
@@ -203,7 +187,7 @@ const ResponsiveResumeBuilder = () => {
                 </div>
                 <div className="flex-1">
                   <div className="font-semibold text-base">{section.title}</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">{section.description}</div>
+                  <div className="text-sm text-gray-500 mt-1">{section.description}</div>
                 </div>
                 {activeSection === section.id && (
                   <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
@@ -212,45 +196,27 @@ const ResponsiveResumeBuilder = () => {
             ))}
             
             {/* Mobile Menu Actions */}
-            <div className="pt-4 mt-6 border-t border-gray-200 dark:border-gray-600 space-y-3">
-              {/* Dark Mode Toggle - Mobile */}
-              <button
-                onClick={toggleDarkMode}
-                className="w-full flex items-center space-x-4 px-4 py-3 text-left rounded-xl text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200"
-              >
-                <div className="p-2 rounded-lg bg-gray-500">
-                  {darkMode ? (
-                    <Sun className="w-5 h-5 text-white" />
-                  ) : (
-                    <Moon className="w-5 h-5 text-white" />
-                  )}
-                </div>
-                <div className="flex-1">
-                  <div className="font-medium">{darkMode ? 'Light Mode' : 'Dark Mode'}</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Toggle theme</div>
-                </div>
-              </button>
-              
+            <div className="pt-4 mt-6 border-t border-gray-200 space-y-3">
               {/* Logout Button - Mobile */}
               <button
                 onClick={() => alert('Logout functionality')}
-                className="w-full flex items-center space-x-4 px-4 py-3 text-left rounded-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200"
+                className="w-full flex items-center space-x-4 px-4 py-3 text-left rounded-xl text-red-600 hover:bg-red-50 transition-all duration-200"
               >
                 <div className="p-2 rounded-lg bg-red-500">
                   <LogOut className="w-5 h-5 text-white" />
                 </div>
                 <div className="flex-1">
                   <div className="font-medium">Logout</div>
-                  <div className="text-sm text-red-400 dark:text-red-300">Sign out of account</div>
+                  <div className="text-sm text-red-400">Sign out of account</div>
                 </div>
               </button>
             </div>
           </nav>
           
           {/* Current Section Indicator */}
-          <div className="mt-8 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-            <div className="text-sm text-gray-600 dark:text-gray-400">Currently viewing:</div>
-            <div className="font-medium text-gray-900 dark:text-white">
+          <div className="mt-8 p-4 bg-gray-50 rounded-lg">
+            <div className="text-sm text-gray-600">Currently viewing:</div>
+            <div className="font-medium text-gray-900">
               {sections.find(s => s.id === activeSection)?.title}
             </div>
           </div>
@@ -258,7 +224,7 @@ const ResponsiveResumeBuilder = () => {
       </div>
 
       {/* Main Content - Single Section Display */}
-      <main className="min-h-screen bg-gray-50 dark:bg-gray-900 overflow-x-hidden w-full max-w-full">
+      <main className="min-h-screen bg-gray-50 overflow-x-hidden w-full max-w-full">
         {/* Resume Builder Section */}
         {activeSection === 'builder' && (
           <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
@@ -267,15 +233,15 @@ const ResponsiveResumeBuilder = () => {
                 
                 {/* Form Section */}
                 <div className="space-y-6 w-full max-w-full">
-                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 w-full max-w-full overflow-hidden">
-              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
+                  <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 w-full max-w-full overflow-hidden">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">
                 Personal Information
               </h2>
               
               {/* Personal Info Form */}
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Full Name
                   </label>
                   <input
@@ -284,13 +250,13 @@ const ResponsiveResumeBuilder = () => {
                     value={formData.name}
                     onChange={handleInputChange}
                     placeholder="Enter your full name"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Email
                     </label>
                     <input
@@ -299,12 +265,12 @@ const ResponsiveResumeBuilder = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       placeholder="your@email.com"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                       Phone
                     </label>
                     <input
@@ -313,7 +279,7 @@ const ResponsiveResumeBuilder = () => {
                       value={formData.phone}
                       onChange={handleInputChange}
                       placeholder="+1 (555) 123-4567"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     />
                   </div>
                 </div>
@@ -328,7 +294,7 @@ const ResponsiveResumeBuilder = () => {
                     value={formData.location}
                     onChange={handleInputChange}
                     placeholder="City, State/Country"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   />
                 </div>
 
@@ -371,14 +337,14 @@ const ResponsiveResumeBuilder = () => {
                       placeholder="Company Name"
                       value={exp.company}
                       onChange={(e) => handleExperienceChange(index, 'company', e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     />
                     <input
                       type="text"
                       placeholder="Position Title"
                       value={exp.position}
                       onChange={(e) => handleExperienceChange(index, 'position', e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     />
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -387,14 +353,14 @@ const ResponsiveResumeBuilder = () => {
                       placeholder="Start Date"
                       value={exp.startDate}
                       onChange={(e) => handleExperienceChange(index, 'startDate', e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     />
                     <input
                       type="date"
                       placeholder="End Date"
                       value={exp.endDate}
                       onChange={(e) => handleExperienceChange(index, 'endDate', e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     />
                   </div>
                   <textarea
@@ -431,14 +397,14 @@ const ResponsiveResumeBuilder = () => {
                       placeholder="Institution Name"
                       value={edu.institution}
                       onChange={(e) => handleEducationChange(index, 'institution', e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     />
                     <input
                       type="text"
                       placeholder="Degree/Certification"
                       value={edu.degree}
                       onChange={(e) => handleEducationChange(index, 'degree', e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     />
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -447,14 +413,14 @@ const ResponsiveResumeBuilder = () => {
                       placeholder="Graduation Date"
                       value={edu.graduationDate}
                       onChange={(e) => handleEducationChange(index, 'graduationDate', e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     />
                     <input
                       type="text"
                       placeholder="GPA (optional)"
                       value={edu.gpa}
                       onChange={(e) => handleEducationChange(index, 'gpa', e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     />
                   </div>
                 </div>
