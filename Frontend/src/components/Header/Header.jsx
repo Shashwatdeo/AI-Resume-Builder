@@ -17,16 +17,16 @@ function Header() {
 
   return (
     <header>
-        <nav className='w-full flex justify-between items-center p-6 shadow-lg bg-gradient-to-r from-white via-blue-50 to-indigo-50 border-b border-blue-100'>
+        <nav className='w-full flex justify-between items-center p-3 sm:p-6 shadow-lg bg-gradient-to-r from-white via-blue-50 to-indigo-50 border-b border-blue-100'>
           <Logo size="lg" />
       
            {
             authStatus?(
               <>
-              {/* Welcome Message & User Info */}
-              <div className="flex items-center gap-4">
+              {/* Welcome Message & User Info - Responsive */}
+              <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
                 {userData && (
-                  <div className="flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 rounded-xl border border-blue-200">
+                  <div className="hidden sm:flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 rounded-xl border border-blue-200">
                     <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
                       {userData.name?.charAt(0).toUpperCase()}
                     </div>
@@ -34,16 +34,23 @@ function Header() {
                   </div>
                 )}
                 
+                {/* Mobile User Avatar - Shows only on mobile */}
+                {userData && (
+                  <div className="sm:hidden w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                    {userData.name?.charAt(0).toUpperCase()}
+                  </div>
+                )}
+                
                 {/* Hamburger Menu Button */}
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  className="p-3 rounded-lg bg-blue-500 hover:bg-blue-600 text-white transition-colors duration-200 shadow-lg"
+                  className="p-2 sm:p-3 rounded-lg bg-blue-500 hover:bg-blue-600 text-white transition-colors duration-200 shadow-lg flex-shrink-0"
                   aria-label="Toggle navigation menu"
                 >
                   {mobileMenuOpen ? (
-                    <X className="w-6 h-6" />
+                    <X className="w-5 h-5 sm:w-6 sm:h-6" />
                   ) : (
-                    <Menu className="w-6 h-6" />
+                    <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
                   )}
                 </button>
               </div>
@@ -51,12 +58,12 @@ function Header() {
               
             ):
             (
-              <div className='flex gap-4'>
-               <Button asChild variant="outline" className="cursor-pointer px-6 py-3 text-lg font-semibold hover:bg-blue-50 hover:border-blue-300 transition-all duration-300 rounded-xl">
+              <div className='flex gap-2 sm:gap-4'>
+               <Button asChild variant="outline" className="cursor-pointer px-3 py-2 sm:px-6 sm:py-3 text-sm sm:text-lg font-semibold hover:bg-blue-50 hover:border-blue-300 transition-all duration-300 rounded-xl">
               <Link to="/register">Sign Up</Link>
             </Button>
 
-            <Button asChild variant="outline" className="cursor-pointer px-6 py-3 text-lg font-semibold hover:bg-blue-50 hover:border-blue-300 transition-all duration-300 rounded-xl">
+            <Button asChild variant="outline" className="cursor-pointer px-3 py-2 sm:px-6 sm:py-3 text-sm sm:text-lg font-semibold hover:bg-blue-50 hover:border-blue-300 transition-all duration-300 rounded-xl">
               <Link to="/login">Sign In</Link>
             </Button>
               </div>
@@ -64,13 +71,6 @@ function Header() {
            }
          </nav>
 
-         {/* Mobile Menu Overlay */}
-         {mobileMenuOpen && authStatus && (
-           <div 
-             className="fixed inset-0 z-40 bg-black bg-opacity-50"
-             onClick={closeMobileMenu}
-           />
-         )}
 
          {/* Mobile Menu Panel */}
          {authStatus && (

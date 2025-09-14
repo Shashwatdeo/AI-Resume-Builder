@@ -29,7 +29,8 @@ const router = createBrowserRouter([
     children:[
       {
         path: '/',
-        element:<Protected authentication={false}><LandingPage/></Protected> 
+        element:<Protected authentication={false}><LandingPage/></Protected>,
+        index: true
       },
       {
         path:"/resume/:id",

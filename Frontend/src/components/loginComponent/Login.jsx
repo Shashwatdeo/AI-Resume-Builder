@@ -40,7 +40,7 @@ function Login() {
       if (session) {
         const userData = await authService.getCurrentUser();
         if (userData) dispatch(authLogin({ userData: userData.user }));
-        navigate("/");
+        navigate("/dashboard");
       }
     } catch (error) {
       // Show error for authentication failures
