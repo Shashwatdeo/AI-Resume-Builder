@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { Ellipsis, Download, Trash2, Plus, FileText, TrendingUp, Clock, Star, Users, Award, Zap } from 'lucide-react'
 import resumeService from '../../backend/resume'
 import { Toaster, toast } from 'sonner'
@@ -38,6 +39,7 @@ function Dashboard() {
   const [isDownloading, setIsDownloading] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const navigate = useNavigate()
+  const userData = useSelector((state) => state.auth.userData)
 
   useEffect(() => {
     setIsVisible(true)
@@ -124,7 +126,7 @@ function Dashboard() {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-8">
             <div>
               <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
-                Welcome Back! 👋
+                Welcome, {userData?.name}! 👋
               </h1>
               <p className="text-xl text-gray-600 mt-2">Manage your professional resumes and track your progress</p>
             </div>
