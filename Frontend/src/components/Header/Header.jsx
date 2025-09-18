@@ -11,6 +11,7 @@ function Header() {
   const authStatus = useSelector((state) => state.auth.status);
   const userData = useSelector((state) => state.auth.userData);
 
+
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
   };
@@ -21,7 +22,7 @@ function Header() {
           <Logo size="lg" />
       
            {
-            authStatus?(
+            authStatus ? (
               <>
               {/* Welcome Message & User Info - Responsive */}
               <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
@@ -55,9 +56,7 @@ function Header() {
                 </button>
               </div>
               </>
-              
-            ):
-            (
+            ) : (
               <div className='flex gap-2 sm:gap-4'>
                <Button asChild variant="outline" className="cursor-pointer px-3 py-2 sm:px-6 sm:py-3 text-sm sm:text-lg font-semibold hover:bg-blue-50 hover:border-blue-300 transition-all duration-300 rounded-xl">
               <Link to="/register">Sign Up</Link>

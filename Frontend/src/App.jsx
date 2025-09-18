@@ -8,6 +8,7 @@ import authService from './backend/auth'
 
 function App() {
   const [loading, setLoading] = useState(true)
+  const [authChecking, setAuthChecking] = useState(true)
   const [loadingProgress, setLoadingProgress] = useState(0)
   const [loadingMessage, setLoadingMessage] = useState('Initializing...')
   const dispatch = useDispatch()
@@ -17,6 +18,7 @@ function App() {
   // Pages where Header should not be shown
   const noHeaderPages = ['/login', '/register', '/forgot-password', '/reset-password']
   const shouldShowHeader = authStatus && !noHeaderPages.some(page => location.pathname.startsWith(page))
+  
 
   useEffect(() => {
     const loadingSteps = [
@@ -38,6 +40,7 @@ function App() {
 
     // Set a timeout to show the app even if auth check takes too long
     const timeoutId = setTimeout(() => {
+      setAuthChecking(false)
       setLoading(false)
       clearInterval(progressInterval)
     }, 10000) // 10 second timeout
@@ -55,6 +58,7 @@ function App() {
       dispatch(logout())
     })
     .finally(() => {
+      setAuthChecking(false)
       clearTimeout(timeoutId)
       clearInterval(progressInterval)
       setLoadingProgress(100)
@@ -111,7 +115,7 @@ function App() {
         backgroundSize: '50px 50px'
       }}></div>
       
-      {shouldShowHeader && <Header />}
+      {authStatus && <Header />}
       <main className="relative z-10 text-gray-900">
         <Outlet/>
       </main>

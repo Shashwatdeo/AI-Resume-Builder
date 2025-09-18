@@ -45,7 +45,33 @@ export class AuthService{
                     return response.data;
                 } catch (headerError) {
                     console.log("getCurrentUser with token :: error", headerError);
-                    localStorage.removeItem('accessToken');
+                    
+                    // If token is expired (401), try to refresh
+                    if (headerError.response?.status === 401) {
+                        try {
+                            const refreshResponse = await axios.post(`${API_URL}/api/users/refresh-token`, {}, {
+                                withCredentials: true
+                            });
+                            
+                            if (refreshResponse.data.accessToken) {
+                                localStorage.setItem('accessToken', refreshResponse.data.accessToken);
+                                
+                                // Retry getCurrentUser with new token
+                                const retryResponse = await axios.get(`${API_URL}/api/users/currentUser`, {
+                                    headers: {
+                                        'Authorization': `Bearer ${refreshResponse.data.accessToken}`
+                                    },
+                                    withCredentials: true
+                                });
+                                return retryResponse.data;
+                            }
+                        } catch (refreshError) {
+                            console.log("Token refresh failed:", refreshError);
+                            localStorage.removeItem('accessToken');
+                        }
+                    } else {
+                        localStorage.removeItem('accessToken');
+                    }
                 }
             }
             console.log("getCurrentUser :: error", error);
