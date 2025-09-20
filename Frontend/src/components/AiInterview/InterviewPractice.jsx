@@ -83,7 +83,7 @@ const InterviewPractice = () => {
           <Button
             onClick={() => navigate(-1)}
             variant="outline"
-            className="flex items-center"
+            className="flex items-center cursor-pointer"
           >
             <ChevronLeft className="h-5 w-5 mr-1" />
             Back to profile

@@ -259,7 +259,7 @@ function ResumeTemplates() {
                   
                   <Button
                     onClick={handleContinueClick}
-                    className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2"
+                    className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2 cursor-pointer"
                   >
                     <Zap className="h-4 w-4" />
                     Use {selectedTemplate.name}
@@ -307,7 +307,7 @@ function ResumeTemplates() {
               <Button 
                 type="submit" 
                 onClick={handleCreateResume}
-                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 cursor-pointer"
               >
                 Create Resume
               </Button>

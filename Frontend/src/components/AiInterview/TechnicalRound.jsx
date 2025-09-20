@@ -187,6 +187,7 @@ const startRecording = () => {
             variant="outline" 
             onClick={handlePreviousQuestion}
             disabled={loading}
+            className="cursor-pointer"
           >
             <ChevronLeft className="h-4 w-4 mr-1" />
             Back
@@ -220,7 +221,7 @@ const startRecording = () => {
             onClick={toggleRecording}
             variant={isRecording ? "destructive" : "outline"}
             size="sm"
-            className="flex items-center"
+            className="flex items-center cursor-pointer"
             disabled={!isSpeechSupported}
           >
             {isRecording ? (
@@ -274,7 +275,7 @@ const startRecording = () => {
         <Button
           onClick={handleSubmit}
           disabled={!answer || loading}
-          className="w-full mb-4"
+          className="w-full mb-4 cursor-pointer"
         >
           {loading ? 'Evaluating...' : 'Submit Answer'}
         </Button>
@@ -282,7 +283,7 @@ const startRecording = () => {
 
       <Button
         onClick={handleNextQuestion}
-        className="w-full"
+        className="w-full cursor-pointer"
         variant="outline"
       >
         {currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Complete Technical Round'}

@@ -69,7 +69,7 @@ export default function ProfileView() {
       <div className="max-w-4xl mx-auto">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center text-indigo-600 hover:text-indigo-800 mb-6"
+          className="flex items-center text-indigo-600 hover:text-indigo-800 mb-6 cursor-pointer"
         >
           <ChevronLeft className="h-5 w-5 mr-1" />
           Back to profiles
@@ -183,7 +183,7 @@ export default function ProfileView() {
                 navigate(`/interview-practice/${profile._id}`);
                 console.log('Starting interview for profile:', profile._id);
               }}
-              className="bg-indigo-600 hover:bg-indigo-700"
+              className="bg-indigo-600 hover:bg-indigo-700 cursor-pointer"
             >
               Start Interview Practice
             </Button>

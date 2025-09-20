@@ -133,7 +133,7 @@ const ResponsiveResumeBuilder = () => {
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-3 rounded-lg bg-blue-500 hover:bg-blue-600 text-white transition-colors duration-200 shadow-lg"
+                className="p-3 rounded-lg bg-blue-500 hover:bg-blue-600 text-white transition-colors duration-200 shadow-lg cursor-pointer"
                 aria-label="Toggle navigation menu"
                 style={{ minWidth: '48px', minHeight: '48px' }}
               >
@@ -165,7 +165,7 @@ const ResponsiveResumeBuilder = () => {
             <h2 className="text-xl font-bold text-gray-900">Navigation</h2>
             <button
               onClick={closeMobileMenu}
-              className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
+              className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors duration-200 cursor-pointer"
             >
               <X className="w-5 h-5 text-gray-600" />
             </button>
@@ -176,7 +176,7 @@ const ResponsiveResumeBuilder = () => {
               <button
                 key={section.id}
                 onClick={() => handleSectionChange(section.id)}
-                className={`w-full flex items-center space-x-4 px-4 py-4 text-left rounded-xl transition-all duration-200 ${
+                className={`w-full flex items-center space-x-4 px-4 py-4 text-left rounded-xl transition-all duration-200 cursor-pointer ${
                   activeSection === section.id
                     ? 'bg-gradient-to-r from-blue-50 to-purple-50 text-blue-600 shadow-sm border-2 border-blue-200'
                     : 'text-gray-700 hover:bg-gray-50 border-2 border-transparent'
@@ -200,7 +200,7 @@ const ResponsiveResumeBuilder = () => {
               {/* Logout Button - Mobile */}
               <button
                 onClick={() => alert('Logout functionality')}
-                className="w-full flex items-center space-x-4 px-4 py-3 text-left rounded-xl text-red-600 hover:bg-red-50 transition-all duration-200"
+                className="w-full flex items-center space-x-4 px-4 py-3 text-left rounded-xl text-red-600 hover:bg-red-50 transition-all duration-200 cursor-pointer"
               >
                 <div className="p-2 rounded-lg bg-red-500">
                   <LogOut className="w-5 h-5 text-white" />
@@ -323,7 +323,7 @@ const ResponsiveResumeBuilder = () => {
                 </h2>
                 <button
                   onClick={addExperience}
-                  className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 text-sm font-medium"
+                  className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 text-sm font-medium cursor-pointer"
                 >
                   Add Experience
                 </button>
@@ -383,7 +383,7 @@ const ResponsiveResumeBuilder = () => {
                 </h2>
                 <button
                   onClick={addEducation}
-                  className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors duration-200 text-sm font-medium"
+                  className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors duration-200 text-sm font-medium cursor-pointer"
                 >
                   Add Education
                 </button>
@@ -584,7 +584,7 @@ const ResponsiveResumeBuilder = () => {
                 {/* Download Button */}
                 <button
                   onClick={downloadResume}
-                  className="w-full mt-6 px-6 py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center space-x-2 text-lg"
+                  className="w-full mt-6 px-6 py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center space-x-2 text-lg cursor-pointer"
                 >
                   <Download className="w-6 h-6" />
                   <span>Download Resume</span>

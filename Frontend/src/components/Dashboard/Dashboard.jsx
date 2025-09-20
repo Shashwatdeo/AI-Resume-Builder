@@ -281,7 +281,7 @@ function Dashboard() {
                           <Button 
                             variant="ghost" 
                             size="icon" 
-                            className="h-8 w-8 text-gray-500 hover:text-gray-700 hover:bg-gray-100 opacity-0 group-hover:opacity-100 transition-all duration-300"
+                            className="h-8 w-8 text-gray-500 hover:text-gray-700 hover:bg-gray-100 opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer"
                             onClick={(e) => e.stopPropagation()}
                           >
                             <Ellipsis className="h-4 w-4" />
@@ -290,7 +290,7 @@ function Dashboard() {
                         
                         <DropdownMenuContent align="end" className="w-48">
                           <DropdownMenuItem 
-                            className="text-red-600 focus:text-red-600 focus:bg-red-50"
+                            className="text-red-600 focus:text-red-600 focus:bg-red-50 cursor-pointer"
                             onClick={(e) => {
                               e.stopPropagation()
                               setResumeToDelete(resume._id)

@@ -122,7 +122,7 @@ const ATSChecker = () => {
                   <button
                     type="button"
                     onClick={() => fileInputRef.current.click()}
-                    className="px-4 py-2.5 bg-white border-2 border-dashed border-indigo-300 rounded-lg text-indigo-600 font-medium hover:bg-indigo-50 transition-colors"
+                    className="px-4 py-2.5 bg-white border-2 border-dashed border-indigo-300 rounded-lg text-indigo-600 font-medium hover:bg-indigo-50 transition-colors cursor-pointer"
                   >
                     Choose File
                   </button>
@@ -136,7 +136,7 @@ const ATSChecker = () => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors ${isLoading ? 'opacity-80 cursor-not-allowed' : ''}`}
+                  className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors cursor-pointer ${isLoading ? 'opacity-80 cursor-not-allowed' : ''}`}
                 >
                   {isLoading ? (
                     <>
